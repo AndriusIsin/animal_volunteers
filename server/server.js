@@ -11,4 +11,26 @@ const pool = new Pool({
   connectionString: process.env.DB_URL,
   ssl: { rejectUnauthorized: false },
 });
+app.get("/sessions", async (req, res) => {
+  try {
+    const query = "SELECT * FROM sessions ORDER BY id";
+    const result = await pool.query(query);
+    const sessions = result.rows;
+    res.status(200).json(sessions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "fetching sessions" });
+  }
+});
+app.get("/volunteers", async (req, res) => {
+  try {
+    const query = "SELECT * FROM volunteers ORDER BY id";
+    const result = await pool.query(query);
+    const volunteers = result.rows;
+    res.status(200).json(volunteers);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "fetching volunteers" });
+  }
+});
 app.listen(port, () => console.log(`Listening on port ${port}`));
