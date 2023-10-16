@@ -1,0 +1,64 @@
+.textContainer {
+    position: absolute;
+    height: 90vh;
+    width: 100vh;
+    display: grid;
+    align-self: center;
+    max-width: 30rem;
+    align-content: center;
+    flex-direction: column;
+    margin-left: 10rem;
+}
+
+.textContainer h3 {
+    margin-top: -1rem;
+    text-align: left;
+    color: rgb(255, 219, 153);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+    font-size: 18pt;
+}
+
+.textContainer h1 {
+    text-align: left;
+    font-size: 44pt;
+    color: rgb(255, 241, 215);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.textContainer p {
+    text-align: left;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+
+
+
+@media (min-width: 768px) {
+    .textContainer {
+        margin-left: 4rem;
+        max-width: 30rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .textContainer {
+        margin-left: 2rem;
+        max-width: 20rem;
+    }
+
+    .textContainer h3 {
+        font-size: 14pt;
+    }
+}
+
+@media (max-width: 280px) {
+    .textContainer {
+        margin-left: 1rem;
+        max-width: 15rem;
+    }
+
+    .textContainer h1 {
+        font-size: 30pt;
+    }
+}
