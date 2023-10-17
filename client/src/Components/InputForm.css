@@ -1,0 +1,55 @@
+.registration-form {
+    width: 100%;
+    height: 100%;
+}
+
+.form-content {
+    justify-content: flex-start;
+}
+
+.form-content p {
+    text-align: left;
+}
+
+.form-content h2 {
+    text-align: left;
+    color: #54626F;
+}
+
+
+.form-inputs {
+    text-align: left;
+}
+
+.date-placeholder h2,
+p {
+    text-align: center;
+    color: #9aa3ac;
+}
+
+.date-placeholder h2 {
+    font-size: 40pt;
+    margin-bottom: -0.8rem;
+    margin-top: 0.8rem;
+    font-weight: 400;
+}
+
+.container-background {
+    background-color: #e6e6e7;
+}
+
+.date-placeholder {
+    margin-right: 2rem;
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.cancel-button {
+    height: 2.5rem;
+}
