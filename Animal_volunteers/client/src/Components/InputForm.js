@@ -3,7 +3,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./InputForm.css";
 import { useState } from "react";
-
+import Form from "./Form";
 
 const bootstrapTheme = createTheme({
     palette: {
@@ -13,31 +13,19 @@ const bootstrapTheme = createTheme({
     },
 });
 
-const Form = () => {
-    return (
-        <form className="form-inputs">
-            <input placeholder="Enter Your FullName" className="input-Name"></input>
-            <br></br>
-            <input className="input-area" placeholder="Enter your Phone Number"></input>
-            <span>
-                <input className="input-area" placeholder="Enter your email address"></input>
-            </span>
-            <br></br>
-            <Button variant="contained" >Submit</Button>
-        </form>
-    );
-};
-
 const InputForm = () => {
     const [openFormNight, setOpenformNight] = useState(false);
     const [openFormDay, setOpenFormDay] = useState(false);
+    const [sessionType, setSessionType] = useState("night");
 
     const handleBookClickNight = () => {
         setOpenformNight(true);
+        setSessionType("night");
     };
 
     const handleBookClickDay = () => {
         setOpenFormDay(true);
+        setSessionType("day");
     };
 
     const handleCloseFormDay = () => {
@@ -69,7 +57,7 @@ const InputForm = () => {
                             </div>
                             <Collapse in={openFormDay}>
                                 <p>To book your Day Session plese Fill in the form:</p>
-                                <Form />
+                                <Form sessionType={sessionType} />
                             </Collapse>
                             <Divider variant="fullWidth" />
                             <div className="header-container">
@@ -80,7 +68,7 @@ const InputForm = () => {
                             </div>
                             <Collapse in={openFormNight}>
                                 <p>To book your Night Session plese Fill in the form:</p>
-                                <Form />
+                                <Form sessionType={sessionType} />
                             </Collapse>
 
                         </Grid>
