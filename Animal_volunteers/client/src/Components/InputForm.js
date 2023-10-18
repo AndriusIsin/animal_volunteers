@@ -1,7 +1,8 @@
-import { Button, Grid, Divider } from "@mui/material";
+import { Button, Grid, Divider, Collapse } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./InputForm.css";
+import { useState } from "react";
 
 
 const bootstrapTheme = createTheme({
@@ -15,11 +16,11 @@ const bootstrapTheme = createTheme({
 const Form = () => {
     return (
         <form className="form-inputs">
-            <input placeholder="Enter Your FullName"></input>
+            <input placeholder="Enter Your FullName" className="input-Name"></input>
             <br></br>
-            <input placeholder="Enter your Phone Number"></input>
+            <input className="input-area" placeholder="Enter your Phone Number"></input>
             <span>
-                <input placeholder="Enter your email address"></input>
+                <input className="input-area" placeholder="Enter your email address"></input>
             </span>
             <br></br>
             <Button variant="contained" >Submit</Button>
@@ -28,8 +29,26 @@ const Form = () => {
 };
 
 const InputForm = () => {
+    const [openFormNight, setOpenformNight] = useState(false);
+    const [openFormDay, setOpenFormDay] = useState(false);
+
+    const handleBookClickNight = () => {
+        setOpenformNight(true);
+    };
+
+    const handleBookClickDay = () => {
+        setOpenFormDay(true);
+    };
+
+    const handleCloseFormDay = () => {
+        setOpenFormDay(false);
+    };
+
+    const handleCloseBookingFormNight = () => {
+        setOpenformNight(false);
+    };
     return (
-        <div>InputForm
+        <div>
             <ThemeProvider
                 theme={bootstrapTheme}
             ><div className="container-background">
@@ -42,16 +61,28 @@ const InputForm = () => {
                         <Grid item xs={9} className="form-content">
                             <div className="header-container">
                                 <h2>Day Sessions</h2>
-                                <Button color="primary" variant="outlined" className="cancel-button" startIcon={<CancelIcon />}>Cancel</Button>
+                                {
+                                    openFormDay ? <Button color="primary" variant="outlined" className="cancel-button" startIcon={<CancelIcon />} onClick={handleCloseFormDay}>Cancel</Button>
+                                        : <Button color="primary" variant="contained" className="Book-now" onClick={handleBookClickDay}>Book Day Session</Button>
+
+                                }
                             </div>
+                            <Collapse in={openFormDay}>
+                                <p>To book your Day Session plese Fill in the form:</p>
+                                <Form />
+                            </Collapse>
+                            <Divider variant="fullWidth" />
+                            <div className="header-container">
+                                <h2>Night Sessions</h2>
+                                {openFormNight ? <Button color="primary" variant="outlined" className="cancel-button" startIcon={<CancelIcon />} onClick={handleCloseBookingFormNight}>Cancel</Button>
+                                    : <Button color="primary" variant="contained" className="Book-now" onClick={handleBookClickNight}>Book Night Session</Button>
+                                }
+                            </div>
+                            <Collapse in={openFormNight}>
+                                <p>To book your Night Session plese Fill in the form:</p>
+                                <Form />
+                            </Collapse>
 
-
-                            <p>To book your Day Session plese Fill in the form:</p>
-                            <Form />
-                            <Divider variant="middle" />
-                            <h3>Night Sessions</h3>
-                            <p>To book your Night Session plese Fill in the form:</p>
-                            <Form />
                         </Grid>
 
                     </Grid>
