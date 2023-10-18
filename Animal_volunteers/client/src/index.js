@@ -9,6 +9,7 @@ import About from "./Components/About";
 import Calendar from "./Components/Calendar";
 import Contacts from "./Components/Contacts";
 import Home from "./Components/Home";
+import Error from "./Components/Error";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
