@@ -1,6 +1,6 @@
 import { Button, Grid, Divider, Collapse } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./InputForm.css";
 import { useState } from "react";
@@ -12,6 +12,9 @@ const bootstrapTheme = createTheme({
         primary: {
             main: "#54626F",
         },
+        checkBox: {
+            mail: "#228b22",
+        },
     },
 });
 
@@ -19,6 +22,7 @@ const InputForm = () => {
     const [openFormNight, setOpenformNight] = useState(false);
     const [openFormDay, setOpenFormDay] = useState(false);
     const [sessionType, setSessionType] = useState("night");
+    const [sesseionBooked, setSessionBooked] = useState(true);
 
     const handleBookClickNight = () => {
         setOpenformNight(true);
@@ -43,7 +47,8 @@ const InputForm = () => {
         <div>
             <ThemeProvider
                 theme={bootstrapTheme}
-            ><div className="container-background">
+            >
+                <div className="container-background">
                     <Grid className="registration-form" container flexDirection="row" >
 
                         <Grid item xs={2} className="date-placeholder">
@@ -52,10 +57,12 @@ const InputForm = () => {
                         </Grid>
                         <Grid item xs={9} className="form-content">
                             <div className="header-container">
-                                <div className="h2-day"><h2>Day Sessions </h2><CheckCircleIcon /></div>
+                                <div className="h2-day"><h2>Day Sessions </h2>
+                                    {sesseionBooked && <CheckCircleIcon />
+                                    }</div>
                                 {
                                     openFormDay ? <Button color="primary" variant="outlined" className="cancel-button" startIcon={<CancelIcon />} onClick={handleCloseFormDay}>Cancel</Button>
-                                        : <Button color="primary" variant="contained" className="Book-now" onClick={handleBookClickDay}>Book Day Session</Button>
+                                        : <Button color="primary" variant="contained" className="Book-now" disabled={sesseionBooked} onClick={handleBookClickDay}>Book Day Session</Button>
 
                                 }
                             </div>

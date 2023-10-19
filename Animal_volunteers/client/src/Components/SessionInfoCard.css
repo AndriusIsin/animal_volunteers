@@ -3,12 +3,35 @@
     height: 4rem;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card {
+    width: 50rem;
+    height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(255, 220, 106, 0.3);
+
 }
 
 .card-name {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border: 1px solid red;
+    align-items: center;
     width: auto;
+}
+
+.card-name button {
+    width: 5rem;
+    height: 2rem;
+}
+
+.background-gray {
+    width: 50rem;
+    height: 4rem;
+    align-items: center;
+    background-color: rgb(158, 158, 158, 0.3);
+
 }
