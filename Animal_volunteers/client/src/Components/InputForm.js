@@ -1,9 +1,11 @@
 import { Button, Grid, Divider, Collapse } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./InputForm.css";
 import { useState } from "react";
 import Form from "./Form";
+
 
 const bootstrapTheme = createTheme({
     palette: {
@@ -21,11 +23,13 @@ const InputForm = () => {
     const handleBookClickNight = () => {
         setOpenformNight(true);
         setSessionType("night");
+        setOpenFormDay(false);
     };
 
     const handleBookClickDay = () => {
         setOpenFormDay(true);
         setSessionType("day");
+        setOpenformNight(false);
     };
 
     const handleCloseFormDay = () => {
@@ -48,7 +52,7 @@ const InputForm = () => {
                         </Grid>
                         <Grid item xs={9} className="form-content">
                             <div className="header-container">
-                                <h2>Day Sessions</h2>
+                                <div className="h2-day"><h2>Day Sessions </h2><CheckCircleIcon /></div>
                                 {
                                     openFormDay ? <Button color="primary" variant="outlined" className="cancel-button" startIcon={<CancelIcon />} onClick={handleCloseFormDay}>Cancel</Button>
                                         : <Button color="primary" variant="contained" className="Book-now" onClick={handleBookClickDay}>Book Day Session</Button>

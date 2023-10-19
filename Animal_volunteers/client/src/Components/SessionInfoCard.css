@@ -1,0 +1,14 @@
+.info-card {
+    width: 50rem;
+    height: 4rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid red;
+    width: auto;
+}

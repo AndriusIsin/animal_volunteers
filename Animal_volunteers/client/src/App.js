@@ -6,6 +6,7 @@ import { Grid } from "@mui/material";
 
 import Navbar from "./Components/Navbar";
 import { Outlet } from "react-router-dom";
+import AdminVue from "./Components/AdminVue";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         </Grid>
       </Grid>
       <Outlet />
+      <AdminVue />
     </div>
   );
 }
