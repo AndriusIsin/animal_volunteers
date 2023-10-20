@@ -53,39 +53,11 @@ app.get("/sessions", async (req, res) => {
   }
 });
 
-//update session information by ID
-app.put("/sessions/:id", async (req, res) => {
-  try {
-    const sessionId = req.params.id; // Extract the session ID from the URL parameter
-    const { Date, Time, volunteer_name } = req.body; // Extract updated session data from the request body
 
-    // Check if the provided session ID is valid (e.g., numeric)
-    if (isNaN(sessionId)) {
-      return res.status(400).json({ error: "Invalid session ID" });
-    }
-
-    // Update the session in the database based on the provided session ID
-    const updateQuery = `
-      UPDATE sessions
-      SET Date = $1, Time = $2
-      WHERE id = $3;
-    `;
-
-    const updateValues = [Date, Time, sessionId];
-
-    await pool.query(updateQuery, updateValues);
-
-    res.status(200).json({ message: "Session updated successfully" });
-  } catch (error) {
-    console.error("Error updating the session:", error);
-    res.status(500).json({ error: "An error occurred while updating the session" });
-  }
-});
 
 
 
 // Update volunteer information and session date and time
-
 app.put("/volunteers/:id", async (req, res) => {
   try {
     const volunteerId = req.params.id;
@@ -173,7 +145,7 @@ app.post("/volunteers-and-sessions", async (req, res) => {
     phone,
     email,
     date,
-    time
+    time,
   } = req.body;
 
   if (!name || !phone || !email || !date || !time) {
