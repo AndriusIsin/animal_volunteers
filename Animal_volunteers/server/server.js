@@ -12,18 +12,20 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
+// get all sessionss
+app.get("/sessions", async (req, res) => {
+  try {
+    const query = "SELECT * FROM sessions ORDER BY id";
+    const result = await pool.query(query);
+    const sessions = result.rows;
+    res.status(200).json(sessions);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "fetching sessions" });
+  }
+});
 
-// app.get("/sessions", async (req, res) => {
-//   try {
-//     const query = "SELECT * FROM sessions ORDER BY id";
-//     const result = await pool.query(query);
-//     const sessions = result.rows;
-//     res.status(200).json(sessions);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "fetching sessions" });
-//   }
-// });
+
 
 //get everything from sessions table with the name of the volunteer
 app.get("/sessions", async (req, res) => {
@@ -33,6 +35,7 @@ app.get("/sessions", async (req, res) => {
         sessions.id AS session_id,
         sessions.Date,
         sessions.Time,
+        sessions.volunteers_id
         volunteers.Name AS volunteer_name
       FROM
         sessions
@@ -50,7 +53,76 @@ app.get("/sessions", async (req, res) => {
   }
 });
 
+//update session information by ID
+app.put("/sessions/:id", async (req, res) => {
+  try {
+    const sessionId = req.params.id; // Extract the session ID from the URL parameter
+    const { Date, Time, volunteer_name } = req.body; // Extract updated session data from the request body
 
+    // Check if the provided session ID is valid (e.g., numeric)
+    if (isNaN(sessionId)) {
+      return res.status(400).json({ error: "Invalid session ID" });
+    }
+
+    // Update the session in the database based on the provided session ID
+    const updateQuery = `
+      UPDATE sessions
+      SET Date = $1, Time = $2
+      WHERE id = $3;
+    `;
+
+    const updateValues = [Date, Time, sessionId];
+
+    await pool.query(updateQuery, updateValues);
+
+    res.status(200).json({ message: "Session updated successfully" });
+  } catch (error) {
+    console.error("Error updating the session:", error);
+    res.status(500).json({ error: "An error occurred while updating the session" });
+  }
+});
+
+
+
+// Update volunteer information and session date and time
+
+app.put("/volunteers/:id", async (req, res) => {
+  try {
+    const volunteerId = req.params.id;
+    const { Name, Phone, Email, Time, Date } = req.body;
+
+    if (isNaN(volunteerId)) {
+      return res.status(400).json({ error: "Invalid volunteer ID" });
+    }
+    const updateVolunteerQuery = `
+      UPDATE volunteers
+      SET Name = $1, Phone = $2, Email = $3
+      WHERE id = $4;
+    `;
+    const updateVolunteerValues = [Name, Phone, Email, volunteerId];
+
+    await pool.query(updateVolunteerQuery, updateVolunteerValues);
+
+    const updateSessionsQuery = `
+      UPDATE sessions
+      SET Time = $1, Date=$2
+      WHERE volunteers_id = $3;
+    `;
+
+    const updateSessionsValues = [Time, Date, volunteerId];
+
+    await pool.query(updateSessionsQuery, updateSessionsValues);
+
+    res.status(200).json({ message: "Volunteer information and assigned sessions updated successfully" });
+  } catch (error) {
+    console.error("Error updating the volunteer and assigned sessions:", error);
+    res.status(500).json({ error: "An error occurred while updating the volunteer and assigned sessions" });
+  }
+});
+
+
+
+//get all volunteers
 app.get("/volunteers", async (req, res) => {
   try {
     const query = "SELECT * FROM volunteers ORDER BY id";
@@ -94,7 +166,7 @@ app.post("/volunteers", (req, res) => {
   }
 });
 
-
+//to create new volunteer and session in the same time
 app.post("/volunteers-and-sessions", async (req, res) => {
   const {
     name,
@@ -114,7 +186,6 @@ app.post("/volunteers-and-sessions", async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    // Insert the new volunteer into the "volunteers" table
     const volunteerInsertQuery = `
       INSERT INTO volunteers (Name, Phone, Email)
       VALUES ($1, $2, $3)
@@ -125,7 +196,6 @@ app.post("/volunteers-and-sessions", async (req, res) => {
     const volunteerResult = await client.query(volunteerInsertQuery, volunteerValues);
     const volunteerId = volunteerResult.rows[0].id;
 
-    // Insert the new session into the "sessions" table
     const sessionInsertQuery = `
       INSERT INTO sessions (Date, Time, Volunteers_id)
       VALUES ($1, $2, $3);
