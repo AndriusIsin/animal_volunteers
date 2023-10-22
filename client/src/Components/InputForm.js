@@ -21,8 +21,8 @@ const InputForm = () => {
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
   const [sessionType, setSessionType] = useState("night");
-  const [sesseionBooked, setSessionBooked] = useState(true);
-
+  // const [sesseionBooked, setSessionBooked] = useState(true);
+  const sesseionBooked = true;
   const handleBookClickNight = () => {
     setOpenformNight(true);
     setSessionType("night");
