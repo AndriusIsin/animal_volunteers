@@ -9,7 +9,9 @@
     "@mui/icons-material": "^5.14.14",
     "@mui/material": "^5.14.14",
     "@mui/styled-engine-sc": "^6.0.0-alpha.1",
+    "@mui/x-date-pickers": "^6.16.3",
     "cross-env": "^7.0.3",
+    "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.17.0",
@@ -20,8 +22,8 @@
   },
   "scripts": {
     "start": "cross-env ESLINT_NO_DEV_ERRORS=true react-scripts start",
-    "build": "react-scripts build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d lib",
+    "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
