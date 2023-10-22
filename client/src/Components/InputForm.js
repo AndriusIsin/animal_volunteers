@@ -17,7 +17,8 @@ const bootstrapTheme = createTheme({
   },
 });
 
-const InputForm = () => {
+const InputForm = ({ valueDate }) => {
+  console.log(valueDate);
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
   const [sessionType, setSessionType] = useState("night");
@@ -48,8 +49,8 @@ const InputForm = () => {
         <div className="container-background">
           <Grid className="registration-form" container flexDirection="row">
             <Grid item xs={2} className="date-placeholder">
-              <h2>17</h2>
-              <p>November</p>
+              <h2>{valueDate.day}</h2>
+              <p>{valueDate.month}</p>
             </Grid>
             <Grid item xs={9} className="form-content">
               <div className="header-container">

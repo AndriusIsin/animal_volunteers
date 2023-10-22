@@ -36,14 +36,17 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#f7ffec" }}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "rgba(135, 155, 159, 0.2)" }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AgricultureIcon
             sx={{
               display: {
                 fontSize: "2rem",
-                color: "#e28743",
+                color: "#54626F",
                 xs: "none",
                 md: "flex",
               },
@@ -61,7 +64,7 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#e28743",
+              color: "#54626F",
               textDecoration: "none",
             }}
           >
@@ -75,7 +78,7 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              style={{ color: "#e28743" }}
+              style={{ color: "#54626F" }}
             >
               <MenuIcon />
             </IconButton>
@@ -100,7 +103,7 @@ function ResponsiveAppBar() {
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
-                    style={{ textDecoration: "none", color: "#e28743" }}
+                    style={{ textDecoration: "none", color: "#54626F" }}
                     to={page === "Home" ? "/" : `/${page}`}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -113,7 +116,7 @@ function ResponsiveAppBar() {
             sx={{
               display: {
                 fontSize: "2rem",
-                color: "#e28743",
+                color: "#54626F",
                 xs: "flex",
                 md: "none",
               },
@@ -132,7 +135,7 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#e28743",
+              color: "#54626F",
               textDecoration: "none",
             }}
           >
@@ -144,14 +147,14 @@ function ResponsiveAppBar() {
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{
-                  my: 4,
+                  my: 2,
                   mx: 4,
-                  color: "#e28743",
+                  color: "#54626F",
                   display: "block",
                 }}
               >
                 <Link
-                  style={{ textDecoration: "none", color: "#e28743" }}
+                  style={{ textDecoration: "none", color: "#54626F" }}
                   to={page === "Home" ? "/" : `/${page}`}
                 >
                   {page}
@@ -164,7 +167,7 @@ function ResponsiveAppBar() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <AccountCircleIcon
-                  sx={{ fontSize: "3rem", color: "#e28743" }}
+                  sx={{ fontSize: "3rem", color: "#54626F" }}
                 />
               </IconButton>
             </Tooltip>
