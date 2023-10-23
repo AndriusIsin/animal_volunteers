@@ -27,7 +27,7 @@ function App() {
       .then((data) => {
         setAllSessions(data);
 
-        // After setting allSessions, check for existing bookings
+        // After setting allSessions
         const isDayBookingExist = allSessions.some((session) => {
           console.log("Date From Database----->", session.date);
           console.log("Date From Calendar----->", valueDate.date);
@@ -67,7 +67,7 @@ function App() {
         </Grid>
       </Grid>
       <Outlet />
-      <AdminVue allSessions={allSessions} />
+      <AdminVue allSessions={allSessions} valueDate={valueDate} />
     </div>
   );
 }

@@ -24,6 +24,7 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
   const [sessionTime, setSessionTime] = useState("night");
   const [date, setDate] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [disableInputs, setDisableInputs] = useState(false);
 
 
   const handleBookClickNight = () => {
@@ -31,6 +32,8 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
     setSessionTime("evening");
     setOpenFormDay(false);
     setDate(valueDate.date);
+    setDisableInputs(false);
+
   };
 
   const handleBookClickDay = () => {
@@ -38,14 +41,17 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
     setSessionTime("morning");
     setOpenformNight(false);
     setDate(valueDate.date);
+    setDisableInputs(false);
   };
 
   const handleCloseFormDay = () => {
     setOpenFormDay(false);
+    setSuccessMessage("");
   };
 
   const handleCloseBookingFormNight = () => {
     setOpenformNight(false);
+    setSuccessMessage("");
   };
 
   return (
@@ -87,7 +93,7 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
               </div>
               <Collapse in={openFormDay}>
                 {successMessage !== "" ? <p>{successMessage}</p> : <p>To book your Day Session plese Fill in the form:</p>}
-                <Form sessionTime={sessionTime} setSuccessMessage={setSuccessMessage} setAllSessions={setAllSessions} date={date} />
+                <Form disableInputs={disableInputs} setDisableInputs={setDisableInputs} sessionTime={sessionTime} setSuccessMessage={setSuccessMessage} setAllSessions={setAllSessions} date={date} />
               </Collapse>
               <Divider variant="fullWidth" />
               <div className="header-container">
@@ -119,7 +125,7 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
               </div>
               <Collapse in={openFormNight}>
                 {successMessage !== "" ? <p>{successMessage}</p> : <p>To book your Night Session plese Fill in the form:</p>}
-                <Form sessionTime={sessionTime} setSuccessMessage={setSuccessMessage} setAllSessions={setAllSessions} date={date} />
+                <Form disableInputs={disableInputs} setDisableInputs={setDisableInputs} sessionTime={sessionTime} setSuccessMessage={setSuccessMessage} setAllSessions={setAllSessions} date={date} />
               </Collapse>
             </Grid>
           </Grid>

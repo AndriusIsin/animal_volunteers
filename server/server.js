@@ -13,17 +13,17 @@ const pool = new Pool({
 });
 
 // get all sessionss
-app.get("/sessions", async (req, res) => {
-  try {
-    const query = "SELECT * FROM sessions ORDER BY id";
-    const result = await pool.query(query);
-    const sessions = result.rows;
-    res.status(200).json(sessions);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "fetching sessions" });
-  }
-});
+// app.get("/sessions", async (req, res) => {
+//   try {
+//     const query = "SELECT * FROM sessions ORDER BY id";
+//     const result = await pool.query(query);
+//     const sessions = result.rows;
+//     res.status(200).json(sessions);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "fetching sessions" });
+//   }
+// });
 
 
 

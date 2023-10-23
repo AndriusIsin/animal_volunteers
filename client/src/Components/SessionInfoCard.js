@@ -2,7 +2,6 @@ import "./SessionInfoCard.css";
 import { Button, Card, Grid } from "@mui/material";
 
 const SessionInfoCard = ({ allSessions }) => {
-
   return (
     <div>
       {allSessions.map((session, index) => (
@@ -10,10 +9,10 @@ const SessionInfoCard = ({ allSessions }) => {
           <Grid
             container
             direction="row"
-            className={session.Time === "evening" ? "background-gray" : "card"}
+            className={session.time === "evening" ? "background-gray" : "card"}
           >
             <Grid item xs={2}>
-              <div>{session.date}</div>
+              <div>{session.date.split("T")[0]}</div>
             </Grid>
             <Grid item xs={8} className="card-name">
               <p>{session.volunteer_name}</p>

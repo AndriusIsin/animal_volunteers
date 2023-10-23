@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 
-const Form = ({ sessionTime, date, setSuccessMessage }) => {
+const Form = ({ sessionTime, date, setSuccessMessage, disableInputs, setDisableInputs }) => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
@@ -10,6 +10,7 @@ const Form = ({ sessionTime, date, setSuccessMessage }) => {
 
     async function handleSubmitButton(e) {
         e.preventDefault();
+
         let time = sessionTime;
         const newBooking = {
             name,
@@ -37,6 +38,11 @@ const Form = ({ sessionTime, date, setSuccessMessage }) => {
             } else if (res.ok) {
                 setErrorMessage("");
                 setSuccessMessage("User and session created");
+                setEmail("");
+                setName("");
+                setPhone("");
+                setDisableInputs(true);
+
             }
             const response = await fetch("https://animal-server.onrender.com/sessions");
 
@@ -44,16 +50,12 @@ const Form = ({ sessionTime, date, setSuccessMessage }) => {
                 throw new Error(`Failed to fetch video list (${response.status})`);
             }
 
+
             const data = await response.json();
             console.log(data);
-
-            setName("");
-            setPhone("");
-            setEmail("");
         } catch (error) {
             console.error("Error:", error);
         }
-
     }
     return (
         <form className="form-inputs" onSubmit={handleSubmitButton} >
@@ -65,15 +67,16 @@ const Form = ({ sessionTime, date, setSuccessMessage }) => {
                     setName(e.target.value);
                     setSuccessMessage("");
                 }}
+                disabled={disableInputs}
                 placeholder="Enter Your FullName"
-                className="input-Name"
-            ></input>            <br></br>
-            <input type="phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-area" placeholder="Enter your Phone Number"></input>
+                className="input-Name"></input>
+            <br></br>
+            <input type="phone" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={disableInputs} className="input-area" placeholder="Enter your Phone Number"></input>
             <span>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-area" placeholder="Enter your email address"></input>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={disableInputs} className="input-area" placeholder="Enter your email address"></input>
             </span>
             <br></br>
-            <Button variant="contained" type="sabmit">Submit</Button>
+            <Button disabled={disableInputs} variant="contained" type="sabmit">Submit</Button>
         </form>
     );
 };
