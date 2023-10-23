@@ -1,19 +1,8 @@
-import { useEffect, useState } from "react";
 import "./SessionInfoCard.css";
 import { Button, Card, Grid } from "@mui/material";
 
-const SessionInfoCard = () => {
-  const [allSessions, setAllSessions] = useState([]);
+const SessionInfoCard = ({ allSessions }) => {
 
-  useEffect(() => {
-    fetch("https://animal-server.onrender.com/sessions")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setAllSessions(data);
-      });
-  }, []);
   return (
     <div>
       {allSessions.map((session, index) => (

@@ -1,11 +1,11 @@
 import "./AdminVue.css";
 import SessionInfoCard from "./SessionInfoCard";
 
-const AdminVue = () => {
+const AdminVue = ({ allSessions }) => {
     return (
         <div className="admin-wrapper">
             <div className="admin-vue">
-                <SessionInfoCard />
+                <SessionInfoCard allSessions={allSessions} />
             </div>
 
         </div>);
