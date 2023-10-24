@@ -1,5 +1,5 @@
 .info-card {
-    width: 50rem;
+    width: 45rem;
     height: 4rem;
     justify-content: space-between;
     align-items: center;
@@ -7,11 +7,12 @@
 }
 
 .card {
-    width: 50rem;
+    width: 45rem;
     height: 4rem;
     align-items: center;
     justify-content: space-between;
     background-color: #D4C8BE;
+    border: 1px solid white;
 
 }
 
@@ -23,15 +24,23 @@
     width: auto;
 }
 
-.card-name button {
-    width: 5rem;
-    height: 2rem;
-}
-
 .background-gray {
-    width: 50rem;
+    width: 45rem;
     height: 4rem;
     align-items: center;
+    justify-content: space-between;
     background-color: #AF9F8C;
+    border: 1px solid white;
 
+}
+
+.card-name p {
+    color: rgb(56, 56, 56);
+    font-size: 14pt;
+    font-weight: 600;
+}
+
+.card-name button {
+    width: 6rem;
+    height: 2rem;
 }

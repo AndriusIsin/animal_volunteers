@@ -59,7 +59,7 @@
 .date-placeholder h2,
 p {
     text-align: center;
-    color: #9aa3ac;
+    color: #54626F;
 }
 
 .date-placeholder h2 {
@@ -70,9 +70,9 @@ p {
 }
 
 .container-background {
-    background-color: #efefef;
+    background-color: rgb(255, 255, 255, 0.3);
     border-radius: 0.4rem;
-    border: 1px solid rgb(170, 182, 192)
+    border: 1px solid #a6b2b9
 }
 
 .date-placeholder {

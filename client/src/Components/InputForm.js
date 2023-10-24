@@ -11,9 +11,6 @@ const bootstrapTheme = createTheme({
     primary: {
       main: "#54626F",
     },
-    checkBox: {
-      mail: "#228b22",
-    },
   },
 });
 
