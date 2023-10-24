@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import InputForm from "./Components/InputForm";
 import MainBanner from "./Components/MainBanner";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import Navbar from "./Components/Navbar";
 import { Outlet } from "react-router-dom";
@@ -18,17 +18,16 @@ function App() {
     dateDb: dayjs().format("DD/MM/YYYY"),
     date: dayjs().toISOString(),
   });
-  console.log(valueDate);
   const [sessionNightBooked, setSessionNightBooked] = useState(false);
   const [sessionMorningBooked, setSessionMorningBooked] = useState(false);
   const [allSessions, setAllSessions] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch("http://localhost:4000/sessions")
+    fetch("https://animal-server.onrender.com/sessions")
       .then((response) => response.json())
       .then((data) => {
         setAllSessions(data);
-
+        setLoading(false);
         // After setting allSessions
 
         const isDayBookingExist = data.some((session) => {
@@ -68,15 +67,29 @@ function App() {
           <Calendar setValueDate={setValueDate} />
         </Grid>
         <Grid item xs={7}>
-          <InputForm
-            allSessions={allSessions}
-            setAllSessions={setAllSessions}
-            valueDate={valueDate}
-            sessionMorningBooked={sessionMorningBooked}
-            sessionNightBooked={sessionNightBooked}
-            setSessionMorningBooked={setSessionMorningBooked}
-            setSessionNightBooked={setSessionNightBooked}
-          />
+          {loading ? (
+            <Typography
+              variant="h1"
+              sx={{
+                animation: "blinker 1s linear infinite",
+                textAlign: "center",
+                color: "grey",
+                fontWeight: "normal",
+              }}
+            >
+              Loading.....
+            </Typography>
+          ) : (
+            <InputForm
+              allSessions={allSessions}
+              setAllSessions={setAllSessions}
+              valueDate={valueDate}
+              sessionMorningBooked={sessionMorningBooked}
+              sessionNightBooked={sessionNightBooked}
+              setSessionMorningBooked={setSessionMorningBooked}
+              setSessionNightBooked={setSessionNightBooked}
+            />
+          )}
         </Grid>
       </Grid>
       <Outlet />
