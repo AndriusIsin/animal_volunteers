@@ -67,7 +67,7 @@ function App() {
           <Calendar setValueDate={setValueDate} />
         </Grid>
         <Grid item xs={7}>
-          {!loading ? (
+          {loading ? (
             <img src={loadingGif} alt="Loading" />
           ) : (
             <InputForm
