@@ -186,6 +186,7 @@ app.post("/volunteers-and-sessions", async (req, res) => {
     client.release();
   }
 });
+
 // Delete a volunteer by ID and their associated sessions
 app.delete("/volunteers/:id", async (req, res) => {
   const volunteerId = req.params.id;
@@ -226,6 +227,40 @@ app.delete("/volunteers/:id", async (req, res) => {
       error:
         "An error occurred while deleting volunteer and associated sessions",
     });
+  }
+});
+// Delete sessions by time (morning or evening) and date
+
+app.delete("/sessions", async (req, res) => {
+  const { time, date } = req.body;
+
+  if (!time || !date) {
+    return res
+      .status(400)
+      .json({ error: "Missing time or date in the request body" });
+  }
+
+  if (time !== "morning" && time !== "evening") {
+    return res.status(400).json({ error: "Invalid time parameter" });
+  }
+
+  try {
+    await pool.query("BEGIN");
+
+    const deleteSessionsQuery = `
+      DELETE FROM sessions
+      WHERE TO_CHAR(Date, 'DD/MM/YYYY') = $1 AND Time = $2;
+    `;
+    await pool.query(deleteSessionsQuery, [date, time]);
+
+    await pool.query("COMMIT");
+    res.status(200).json({ message: "Sessions deleted successfully" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("Error deleting sessions:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting sessions" });
   }
 });
 
