@@ -186,5 +186,47 @@ app.post("/volunteers-and-sessions", async (req, res) => {
     client.release();
   }
 });
+// Delete a volunteer by ID and their associated sessions
+app.delete("/volunteers/:id", async (req, res) => {
+  const volunteerId = req.params.id;
+
+  if (isNaN(volunteerId)) {
+    return res.status(400).json({ error: "Invalid volunteer ID" });
+  }
+
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    // Delete sessions associated with the volunteer
+    const deleteSessionsQuery = `
+      DELETE FROM sessions
+      WHERE volunteers_id = $1;
+    `;
+
+    await client.query(deleteSessionsQuery, [volunteerId]);
+
+    // Delete the volunteer from the volunteers table
+    const deleteVolunteerQuery = `
+      DELETE FROM volunteers
+      WHERE id = $1;
+    `;
+
+    await client.query(deleteVolunteerQuery, [volunteerId]);
+
+    await client.query("COMMIT");
+    res.status(200).json({
+      message: "Volunteer and associated sessions deleted successfully",
+    });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Error deleting volunteer and associated sessions:", error);
+    res.status(500).json({
+      error:
+        "An error occurred while deleting volunteer and associated sessions",
+    });
+  }
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

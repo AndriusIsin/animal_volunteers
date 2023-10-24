@@ -3,14 +3,14 @@ import * as React from "react";
 import { useState } from "react";
 import InputForm from "./Components/InputForm";
 import MainBanner from "./Components/MainBanner";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import dayjs from "dayjs";
 import Navbar from "./Components/Navbar";
 import { Outlet } from "react-router-dom";
 import AdminVue from "./Components/AdminVue";
 import Calendar from "./Components/Calendar";
 import { useEffect } from "react";
-
+import loadingGif from "./images/loading.gif";
 function App() {
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
@@ -67,18 +67,8 @@ function App() {
           <Calendar setValueDate={setValueDate} />
         </Grid>
         <Grid item xs={7}>
-          {loading ? (
-            <Typography
-              variant="h1"
-              sx={{
-                animation: "blinker 1s linear infinite",
-                textAlign: "center",
-                color: "grey",
-                fontWeight: "normal",
-              }}
-            >
-              Loading.....
-            </Typography>
+          {!loading ? (
+            <img src={loadingGif} alt="Loading" />
           ) : (
             <InputForm
               allSessions={allSessions}
