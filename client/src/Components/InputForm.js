@@ -6,7 +6,6 @@ import "./InputForm.css";
 import { useState } from "react";
 import Form from "./Form";
 
-
 const bootstrapTheme = createTheme({
   palette: {
     primary: {
@@ -18,22 +17,24 @@ const bootstrapTheme = createTheme({
   },
 });
 
-const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNightBooked }) => {
+const InputForm = ({
+  valueDate,
+  sessionMorningBooked,
+  sessionNightBooked,
+  setSessionMorningBooked,
+  setSessionNightBooked,
+}) => {
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
   const [sessionTime, setSessionTime] = useState("night");
   const [date, setDate] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [disableInputs, setDisableInputs] = useState(false);
-
 
   const handleBookClickNight = () => {
     setOpenformNight(true);
     setSessionTime("evening");
     setOpenFormDay(false);
     setDate(valueDate.date);
-    setDisableInputs(false);
-
   };
 
   const handleBookClickDay = () => {
@@ -41,17 +42,14 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
     setSessionTime("morning");
     setOpenformNight(false);
     setDate(valueDate.date);
-    setDisableInputs(false);
   };
 
   const handleCloseFormDay = () => {
     setOpenFormDay(false);
-    setSuccessMessage("");
   };
 
   const handleCloseBookingFormNight = () => {
     setOpenformNight(false);
-    setSuccessMessage("");
   };
 
   return (
@@ -92,8 +90,18 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
                 )}
               </div>
               <Collapse in={openFormDay}>
-                {successMessage !== "" ? <p>{successMessage}</p> : <p>To book your Day Session plese Fill in the form:</p>}
-                <Form disableInputs={disableInputs} setDisableInputs={setDisableInputs} sessionTime={sessionTime} setSuccessMessage={setSuccessMessage} setAllSessions={setAllSessions} date={date} />
+                {successMessage !== "" ? (
+                  <p>{successMessage}</p>
+                ) : (
+                  <p>To book your Day Session plese Fill in the form:</p>
+                )}
+                <Form
+                  handleCloseBookingForm={handleCloseFormDay}
+                  sessionTime={sessionTime}
+                  setSuccessMessage={setSuccessMessage}
+                  date={date}
+                  SetSessionBooked={setSessionMorningBooked}
+                />
               </Collapse>
               <Divider variant="fullWidth" />
               <div className="header-container">
@@ -124,14 +132,24 @@ const InputForm = ({ valueDate, setAllSessions, sessionMorningBooked, sessionNig
                 )}
               </div>
               <Collapse in={openFormNight}>
-                {successMessage !== "" ? <p>{successMessage}</p> : <p>To book your Night Session plese Fill in the form:</p>}
-                <Form disableInputs={disableInputs} setDisableInputs={setDisableInputs} sessionTime={sessionTime} setSuccessMessage={setSuccessMessage} setAllSessions={setAllSessions} date={date} />
+                {successMessage !== "" ? (
+                  <p>{successMessage}</p>
+                ) : (
+                  <p>To book your Night Session plese Fill in the form:</p>
+                )}
+                <Form
+                  handleCloseBookingForm={handleCloseBookingFormNight}
+                  sessionTime={sessionTime}
+                  setSuccessMessage={setSuccessMessage}
+                  date={date}
+                  SetSessionBooked={setSessionNightBooked}
+                />
               </Collapse>
             </Grid>
           </Grid>
         </div>
-      </ThemeProvider >
-    </div >
+      </ThemeProvider>
+    </div>
   );
 };
 

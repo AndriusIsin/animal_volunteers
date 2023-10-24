@@ -15,28 +15,33 @@ function App() {
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
     month: dayjs().format("MMMM"),
+    dateDb: dayjs().format("DD/MM/YYYY"),
     date: dayjs().toISOString(),
   });
+  console.log(valueDate);
   const [sessionNightBooked, setSessionNightBooked] = useState(false);
   const [sessionMorningBooked, setSessionMorningBooked] = useState(false);
   const [allSessions, setAllSessions] = useState([]);
 
   useEffect(() => {
-    fetch("https://animal-server.onrender.com/sessions")
+    fetch("http://localhost:4000/sessions")
       .then((response) => response.json())
       .then((data) => {
         setAllSessions(data);
 
         // After setting allSessions
-        const isDayBookingExist = allSessions.some((session) => {
-          console.log("Date From Database----->", session.date);
-          console.log("Date From Calendar----->", valueDate.date);
-          return session.date === valueDate.date && session.time === "morning";
+
+        const isDayBookingExist = data.some((session) => {
+          return (
+            session.date === valueDate.dateDb && session.time === "morning"
+          );
         });
         setSessionMorningBooked(isDayBookingExist);
 
-        const isNightBookingExist = allSessions.some((session) => {
-          return session.date === valueDate.date && session.time === "evening";
+        const isNightBookingExist = data.some((session) => {
+          return (
+            session.date === valueDate.dateDb && session.time === "evening"
+          );
         });
         setSessionNightBooked(isNightBookingExist);
       });
@@ -63,7 +68,15 @@ function App() {
           <Calendar setValueDate={setValueDate} />
         </Grid>
         <Grid item xs={7}>
-          <InputForm allSessions={allSessions} setAllSessions={setAllSessions} valueDate={valueDate} sessionMorningBooked={sessionMorningBooked} sessionNightBooked={sessionNightBooked} />
+          <InputForm
+            allSessions={allSessions}
+            setAllSessions={setAllSessions}
+            valueDate={valueDate}
+            sessionMorningBooked={sessionMorningBooked}
+            sessionNightBooked={sessionNightBooked}
+            setSessionMorningBooked={setSessionMorningBooked}
+            setSessionNightBooked={setSessionNightBooked}
+          />
         </Grid>
       </Grid>
       <Outlet />

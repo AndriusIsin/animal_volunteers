@@ -25,37 +25,34 @@ const pool = new Pool({
 //   }
 // });
 
-
-
 //get everything from sessions table with the name of the volunteer
 app.get("/sessions", async (req, res) => {
   try {
     const query = `
       SELECT
         sessions.id AS session_id,
-        sessions.Date,
+        TO_CHAR(sessions.Date, 'DD/MM/YYYY') AS date,
         sessions.Time,
-        sessions.volunteers_id
+        sessions.volunteers_id,
         volunteers.Name AS volunteer_name
       FROM
         sessions
       JOIN
         volunteers
       ON
-        sessions.Volunteers_id = volunteers.id order by session_id;
+        sessions.Volunteers_id = volunteers.id
+      ORDER BY session_id;
     `;
 
     const { rows } = await pool.query(query);
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error executing the query:", error);
-    res.status(500).json({ error: "An error occurred while fetching sessions" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching sessions" });
   }
 });
-
-
-
-
 
 // Update volunteer information and session date and time
 app.put("/volunteers/:id", async (req, res) => {
@@ -85,14 +82,18 @@ app.put("/volunteers/:id", async (req, res) => {
 
     await pool.query(updateSessionsQuery, updateSessionsValues);
 
-    res.status(200).json({ message: "Volunteer information and assigned sessions updated successfully" });
+    res.status(200).json({
+      message:
+        "Volunteer information and assigned sessions updated successfully",
+    });
   } catch (error) {
     console.error("Error updating the volunteer and assigned sessions:", error);
-    res.status(500).json({ error: "An error occurred while updating the volunteer and assigned sessions" });
+    res.status(500).json({
+      error:
+        "An error occurred while updating the volunteer and assigned sessions",
+    });
   }
 });
-
-
 
 //get all volunteers
 app.get("/volunteers", async (req, res) => {
@@ -106,7 +107,6 @@ app.get("/volunteers", async (req, res) => {
     res.status(500).json({ error: "fetching volunteers" });
   }
 });
-
 
 //create new volunteer
 
@@ -127,11 +127,12 @@ app.post("/volunteers", (req, res) => {
       VALUES ($1, $2, $3)
     `;
 
-    pool.query(query, [newName, newPhone, newEmail])
+    pool
+      .query(query, [newName, newPhone, newEmail])
       .then(() => {
         res.status(200).send("New volunteer created");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         res.status(500).send("Error creating a new volunteer");
       });
@@ -140,13 +141,7 @@ app.post("/volunteers", (req, res) => {
 
 //to create new volunteer and session in the same time
 app.post("/volunteers-and-sessions", async (req, res) => {
-  const {
-    name,
-    phone,
-    email,
-    date,
-    time,
-  } = req.body;
+  const { name, phone, email, date, time } = req.body;
 
   if (!name || !phone || !email || !date || !time) {
     res.status(400).send("Incomplete data provided");
@@ -165,7 +160,10 @@ app.post("/volunteers-and-sessions", async (req, res) => {
     `;
 
     const volunteerValues = [name, phone, email];
-    const volunteerResult = await client.query(volunteerInsertQuery, volunteerValues);
+    const volunteerResult = await client.query(
+      volunteerInsertQuery,
+      volunteerValues
+    );
     const volunteerId = volunteerResult.rows[0].id;
 
     const sessionInsertQuery = `
@@ -181,16 +179,12 @@ app.post("/volunteers-and-sessions", async (req, res) => {
   } catch (err) {
     await client.query("ROLLBACK");
     console.error("Error creating volunteer and session:", err);
-    res.status(500).send("An error occurred while creating volunteer and session");
+    res
+      .status(500)
+      .send("An error occurred while creating volunteer and session");
   } finally {
     client.release();
   }
 });
-
-
-
-
-
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
