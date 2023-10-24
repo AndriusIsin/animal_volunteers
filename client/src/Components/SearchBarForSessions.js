@@ -5,6 +5,7 @@ import { styled, lighten, darken } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const SearchBarForSessions = ({ allSessions }) => {
+    const [selectedValue, setSelectedValue] = React.useState("");
     const theme = createTheme({
         palette: {
             primary: {
@@ -22,7 +23,7 @@ const SearchBarForSessions = ({ allSessions }) => {
         };
     });
 
-    const [selectedValue, setSelectedValue] = React.useState(null);
+
 
 
     const GroupHeader = styled("div")(({ theme }) => ({
@@ -41,7 +42,7 @@ const SearchBarForSessions = ({ allSessions }) => {
     });
 
     const handleAutocompleteChange = (event, newValue) => {
-        setSelectedValue(newValue);
+        newValue ? setSelectedValue(newValue) : setSelectedValue("");
     };
 
     console.log("selectedValue", selectedValue.volunteer_name);
@@ -58,7 +59,7 @@ const SearchBarForSessions = ({ allSessions }) => {
                 onChange={handleAutocompleteChange}
                 renderInput={(params) => <TextField {...params} label="Search Volunteer Name" />}
                 renderGroup={(params) => (
-                    <div key={params.group}>
+                    <div key={params}>
                         <GroupHeader>{params.group}</GroupHeader>
                         <GroupItems>{params.children}</GroupItems>
                     </div>
