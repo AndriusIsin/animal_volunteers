@@ -44,7 +44,7 @@ const SearchBarForSessions = ({ allSessions }) => {
         setSelectedValue(newValue);
     };
 
-    console.log("selectedValue---->", selectedValue.volunteer_name);
+    console.log("selectedValue", selectedValue.volunteer_name);
 
     return (
         <ThemeProvider theme={theme}>
