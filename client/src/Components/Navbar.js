@@ -12,13 +12,17 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Link } from "react-router-dom";
+
 const pages = ["Home", "About", "Calendar", "Contacts"];
-const settings = ["Profile", "Logout"];
+const pagesAdmin = ["Sessions ", "Volunteers"];
+const settings = ["Admin", "User"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +38,18 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleAdminClick = () => {
+    setIsAdmin(true);
+    handleCloseUserMenu();
+  };
+
+  const handleUserClick = () => {
+    setIsAdmin(false);
+    handleCloseUserMenu();
+  };
+
+  const menuPages = isAdmin ? pagesAdmin : pages;
 
   return (
     <AppBar
@@ -100,7 +116,7 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {menuPages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
                     style={{ textDecoration: "none", color: "#54626F" }}
@@ -142,13 +158,13 @@ function ResponsiveAppBar() {
             FarmLogo
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {menuPages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  mx: 4,
+                  mx: isAdmin ? 10 : 4,
                   color: "#54626F",
                   display: "block",
                 }}
@@ -166,9 +182,15 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircleIcon
-                  sx={{ fontSize: "3rem", color: "#54626F" }}
-                />
+                {!isAdmin ? (
+                  <AccountCircleIcon
+                    sx={{ fontSize: "3rem", color: "#54626F" }}
+                  />
+                ) : (
+                  <AdminPanelSettingsIcon
+                    sx={{ fontSize: "3rem", color: "#54626F" }}
+                  />
+                )}
               </IconButton>
             </Tooltip>
             <Menu
@@ -188,7 +210,12 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={
+                    setting === "Admin" ? handleAdminClick : handleUserClick
+                  }
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -199,4 +226,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;
