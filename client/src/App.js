@@ -22,10 +22,14 @@ function App() {
   const [sessionMorningBooked, setSessionMorningBooked] = useState(false);
   const [allSessions, setAllSessions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openFormNight, setOpenformNight] = useState(false);
+  const [openFormDay, setOpenFormDay] = useState(false);
   useEffect(() => {
     fetch("https://animal-server.onrender.com/sessions")
       .then((response) => response.json())
       .then((data) => {
+        setOpenformNight(false);
+        setOpenFormDay(false);
         setAllSessions(data);
         setLoading(false);
         // After setting allSessions
@@ -78,6 +82,10 @@ function App() {
               sessionNightBooked={sessionNightBooked}
               setSessionMorningBooked={setSessionMorningBooked}
               setSessionNightBooked={setSessionNightBooked}
+              openFormNight={openFormNight}
+              setOpenformNight={setOpenformNight}
+              openFormDay={openFormDay}
+              setOpenFormDay={setOpenFormDay}
             />
           )}
         </Grid>
