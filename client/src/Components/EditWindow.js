@@ -10,72 +10,149 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
-const RadioButtonsGroup = () => {
+dayjs.extend(utc);
+
+const RadioButtonsGroup = ({ setTime, time }) => {
     return (
-        <FormControl >
-            <FormLabel id="demo-radio-buttons-group-label" sx={{ m: "0.5rem" }} >Session Type</FormLabel>
-            <RadioGroup
-                sx={{ marginLeft: "0.5rem", marginBottom: "0.5rem" }}
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="Morning Session"
-                name="radio-buttons-group"
-            >
-                <Grid container direction="row">
-                    <FormControlLabel value="Morning Session" control={<Radio />} label="Morning" />
-                    <FormControlLabel value="Evening Session" control={<Radio />} label="Evening" />
-                </Grid>
-
-            </RadioGroup>
+        <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label" sx={{ m: "0.5rem" }}>
+                Session Type
+            </FormLabel>
+            <Grid container direction="row">
+                <RadioGroup
+                    sx={{ marginLeft: "0.5rem", marginBottom: "0.5rem" }}
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="morning"
+                    name="radio-buttons-group"
+                    value={time}
+                    onChange={(e) => (e.target.value === "morning" ? setTime("morning") : setTime("evening"))}
+                >
+                    <FormControlLabel value="morning" control={<Radio />} label="Morning" />
+                    <FormControlLabel value="evening" control={<Radio />} label="Evening" />
+                </RadioGroup>
+            </Grid>
         </FormControl>
     );
 };
 
-const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
+const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, allSessions }) => {
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+    const [time, setTime] = useState("");
+    const [date, setDate] = useState("");
+    const id = session.volunteers_id;
+    const [dateTaken, setDateTaken] = useState("");
+
     const handleClose = () => {
         setEditWindowOpen(false);
     };
 
+    async function handleSaveButton(e) {
+        e.preventDefault();
+        console.log(id);
+
+        // Check if the session is already taken
+        const isSessionTaken = allSessions.some(
+            (singleSession) => singleSession.date === date && singleSession.time === time
+        );
+
+        if (isSessionTaken) {
+            setDateTaken("This session is already taken. Please choose another date and time.");
+            return;
+        }
+
+        const editedSessionAndVolunteer = {
+            name,
+            phone,
+            email,
+            time,
+            date,
+        };
+
+        try {
+            const response = await fetch(`https://animal-server.onrender.com/volunteers/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(editedSessionAndVolunteer),
+            });
+
+            if (!response.ok) {
+                console.log(response);
+            } else {
+                const data = await response.json();
+                console.log(data);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+
+        setEditWindowOpen(false);
+        console.log(name, phone, email, time, date);
+    }
+
     return (
-        <Dialog open={editWindowOpen} onClose={handleClose} sx={{ backgroundColor: "rgba(	21, 20, 19, 0.4)" }}>
+        <Dialog open={editWindowOpen} onClose={handleClose} sx={{ backgroundColor: "rgba(21, 20, 19, 0.4)" }}>
             <DialogTitle sx={{ marginLeft: "1rem" }}>Set New Volunteer or Session</DialogTitle>
             <Grid container direction="column" justifyContent="flex-start" sx={{ m: "2rem", mt: "0rem" }}>
-
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker disablePast sx={{ m: "0.5rem", width: "15rem" }} />
+                    <DatePicker
+                        onChange={(newDate) => setDate(newDate.format("DD/MM/YYYY"))}
+                        disablePast
+                        sx={{ m: "0.5rem", width: "15rem" }}
+                        required
+                    />
                 </LocalizationProvider>
-                <RadioButtonsGroup />
+
+                <RadioButtonsGroup time={time} setTime={setTime} />
                 <TextField
+                    required
                     id="outlined-required"
                     label="Volunteer Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     defaultValue={session.volunteer_name}
                     sx={{ m: "0.5rem", width: "20rem" }}
                 />
 
                 <TextField
+                    required
                     id="outlined-phone-input"
                     label="Phone Number"
                     type="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     sx={{ m: "0.5rem", width: "20rem" }}
                 />
                 <TextField
+                    required
                     id="outlined-email-input"
                     label="Email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     sx={{ m: "0.5rem", width: "20rem" }}
                 />
                 <Grid container display="row" justifyContent="flex-end" sx={{ width: " 82%", mt: "1rem" }}>
-                    <Button variant="outlined" sx={{ width: "5rem", marginRight: "1rem" }}>Save</Button>
-                    <Button variant="outlined" onClick={handleClose} sx={{ width: "5rem" }}>Cancel</Button>
+                    <Button variant="outlined" sx={{ width: "5rem", marginRight: "1rem" }} onClick={(e) => handleSaveButton(e)}>
+                        Save
+                    </Button>
+                    <Button variant="outlined" onClick={handleClose} sx={{ width: "5rem" }}>
+                        Cancel
+                    </Button>
                 </Grid>
+
+                {dateTaken !== "" && (<p>{dateTaken}</p>)}
+                {dateTaken && <p style={{ color: "red", marginTop: "1rem" }}>{dateTaken}</p>}
             </Grid>
-
-
         </Dialog>
     );
 };
 
-export default function EditWindowDemo({ session }) {
+const EditWindowDemo = ({ session, allSessions }) => {
     const [editWindowOpen, setEditWindowOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -94,10 +171,12 @@ export default function EditWindowDemo({ session }) {
                 Edit
             </Button>
             <EditWindow
+                allSessions={allSessions}
                 session={session}
                 editWindowOpen={editWindowOpen}
                 setEditWindowOpen={setEditWindowOpen}
             />
         </div>
     );
-}
+};
+export default EditWindowDemo;
