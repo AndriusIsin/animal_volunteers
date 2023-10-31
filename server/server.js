@@ -58,7 +58,7 @@ app.get("/sessions", async (req, res) => {
 app.put("/volunteers/:id", async (req, res) => {
   try {
     const volunteerId = req.params.id;
-    const { Name, Phone, Email, Time, Date } = req.body;
+    const { name, phone, email, time, date } = req.body;
 
     if (isNaN(volunteerId)) {
       return res.status(400).json({ error: "Invalid volunteer ID" });
@@ -68,7 +68,7 @@ app.put("/volunteers/:id", async (req, res) => {
       SET Name = $1, Phone = $2, Email = $3
       WHERE id = $4;
     `;
-    const updateVolunteerValues = [Name, Phone, Email, volunteerId];
+    const updateVolunteerValues = [name, phone, email, volunteerId];
 
     await pool.query(updateVolunteerQuery, updateVolunteerValues);
 
@@ -78,7 +78,7 @@ app.put("/volunteers/:id", async (req, res) => {
       WHERE volunteers_id = $3;
     `;
 
-    const updateSessionsValues = [Time, Date, volunteerId];
+    const updateSessionsValues = [time, date, volunteerId];
 
     await pool.query(updateSessionsQuery, updateSessionsValues);
 
