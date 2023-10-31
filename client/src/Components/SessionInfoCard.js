@@ -1,7 +1,9 @@
 import "./SessionInfoCard.css";
 import { Button, Card, Grid, Divider } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import EditWindowDemo from "./EditWindow";
+
+
 
 const SessionInfoCard = ({ allSessions }) => {
 
@@ -19,15 +21,15 @@ const SessionInfoCard = ({ allSessions }) => {
             </Grid>
             <Divider orientation="vertical" variant="middle" flexItem />
             <Grid item xs={7} className="card-name">
-              <p>{session.volunteer_name}</p>
-              <div>
-                <Button variant="outlined" sx={{ backgroundColor: "rgba(74, 89, 99, 0.4)", marginRight: "1rem" }} color="secondary" startIcon={<EditIcon />}>
-                  Edit
-                </Button>
+              <Grid item justifyContent="flex-start">
+                <p>{session.volunteer_name}</p>
+              </Grid>
+              <Grid container direction="row" justifyContent="flex-end">
+                <EditWindowDemo session={session} />
                 <Button variant="outlined" sx={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} color="primary" startIcon={<DeleteIcon />}>
                   Delete
                 </Button>
-              </div>
+              </Grid>
 
             </Grid>
             <Divider orientation="vertical" variant="middle" flexItem />
@@ -36,6 +38,7 @@ const SessionInfoCard = ({ allSessions }) => {
             </Grid>
           </Grid>
         </Card>
+
       ))}
     </div>
   );

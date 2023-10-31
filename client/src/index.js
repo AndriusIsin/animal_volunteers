@@ -5,10 +5,10 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import About from "./Components/About";
-import Calendar from "./Components/Calendar";
-import Contacts from "./Components/Contacts";
-import Home from "./Components/Home";
+import About from "./Pages/About";
+import CalendarPage from "./Pages/CalendarPage";
+import Contacts from "./Pages/Contacts";
+import Home from "./Pages/Home";
 import Error from "./Components/Error";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,7 +18,7 @@ root.render(
       <Route path="/" element={<App />}>
         <Route path="" element={<Home />} />
         <Route path="*" element={<Error />} />
-        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/about" element={<About />} />
       </Route>
