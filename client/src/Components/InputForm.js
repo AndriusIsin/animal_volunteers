@@ -12,13 +12,14 @@ const InputForm = ({
   sessionNightBooked,
   setSessionMorningBooked,
   setSessionNightBooked,
+  openFormNight,
+  setOpenformNight,
+  openFormDay,
+  setOpenFormDay,
 }) => {
-  const [openFormNight, setOpenformNight] = useState(false);
-  const [openFormDay, setOpenFormDay] = useState(false);
   const [sessionTime, setSessionTime] = useState("night");
   const [date, setDate] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
   const handleBookClickNight = () => {
     setOpenformNight(true);
     setSessionTime("evening");
