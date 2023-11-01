@@ -5,7 +5,7 @@ import EditWindowDemo from "./EditWindow";
 
 
 
-const SessionInfoCard = ({ allSessions }) => {
+const SessionInfoCard = ({ allSessions, setAllSessions }) => {
 
   return (
     <div>
@@ -25,7 +25,7 @@ const SessionInfoCard = ({ allSessions }) => {
                 <p>{session.volunteer_name}</p>
               </Grid>
               <Grid container direction="row" justifyContent="flex-end">
-                <EditWindowDemo session={session} allSessions={allSessions} />
+                <EditWindowDemo session={session} allSessions={allSessions} setAllSessions={setAllSessions} />
                 <Button variant="outlined" sx={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} color="primary" startIcon={<DeleteIcon />}>
                   Delete
                 </Button>

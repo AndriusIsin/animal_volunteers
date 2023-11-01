@@ -3,7 +3,7 @@ import SearchBarForSessions from "./SearchBarForSessions";
 import SessionInfoCard from "./SessionInfoCard";
 // import { useState } from "react";
 
-const AdminVue = ({ allSessions, valueDate }) => {
+const AdminVue = ({ allSessions, valueDate, setAllSessions }) => {
 
   return (
     <div className="admin-wrapper">
@@ -13,7 +13,7 @@ const AdminVue = ({ allSessions, valueDate }) => {
           <SearchBarForSessions allSessions={allSessions} />
         </div>
         {Array.isArray(allSessions) ? (
-          <SessionInfoCard allSessions={allSessions} valueDate={valueDate} />
+          <SessionInfoCard allSessions={allSessions} setAllSessions={setAllSessions} valueDate={valueDate} />
         ) : (
           <p>Invalid session data</p>
         )}
