@@ -10,6 +10,8 @@ import CalendarPage from "./Pages/CalendarPage";
 import Contacts from "./Pages/Contacts";
 import Home from "./Pages/Home";
 import Error from "./Components/Error";
+import Sessions from "./Components/Sessions";
+import Volunteers from "./Components/Volunteers";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +23,8 @@ root.render(
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/about" element={<About />} />
+        <Route path="/sessions" element={<Sessions />} />
+        <Route path="/volunteers" element={<Volunteers />} />
       </Route>
     </Routes>
   </BrowserRouter>
