@@ -59,17 +59,32 @@ app.get("/sessions", async (req, res) => {
 app.put("/volunteers/:id", async (req, res) => {
   try {
     const volunteerId = req.params.id;
-    const { name, phone, email, time, date } = req.body;
+    const { Name, Phone, Email, Time, Date } = req.body;
 
     if (isNaN(volunteerId)) {
       return res.status(400).json({ error: "Invalid volunteer ID" });
     }
+
+    const checkSessionQuery = `
+      SELECT COUNT(*) FROM sessions
+      WHERE date = $1 AND time = $2 
+    `;
+    const checkSessionValues = [Date, Time];
+
+    const result = await pool.query(checkSessionQuery, checkSessionValues);
+
+    const sessionCount = result[0].count;
+
+    if (sessionCount > 0) {
+      return res.status(400).json({ error: "This session is already taken. Please choose another date and time." });
+    }
+
     const updateVolunteerQuery = `
       UPDATE volunteers
       SET Name = $1, Phone = $2, Email = $3
       WHERE id = $4;
     `;
-    const updateVolunteerValues = [name, phone, email, volunteerId];
+    const updateVolunteerValues = [Name, Phone, Email, volunteerId];
 
     await pool.query(updateVolunteerQuery, updateVolunteerValues);
 
@@ -79,7 +94,7 @@ app.put("/volunteers/:id", async (req, res) => {
       WHERE volunteers_id = $3;
     `;
 
-    const updateSessionsValues = [time, date, volunteerId];
+    const updateSessionsValues = [Time, Date, volunteerId];
 
     await pool.query(updateSessionsQuery, updateSessionsValues);
 

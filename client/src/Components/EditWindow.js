@@ -38,14 +38,13 @@ const RadioButtonsGroup = ({ setTime, time }) => {
     );
 };
 
-const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, allSessions }) => {
+const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [time, setTime] = useState("");
     const [date, setDate] = useState("");
     const id = session.volunteers_id;
-    const [dateTaken, setDateTaken] = useState("");
 
     const handleClose = () => {
         setEditWindowOpen(false);
@@ -54,23 +53,14 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, allSessions })
     async function handleSaveButton(e) {
         e.preventDefault();
         console.log(id);
-
-        // Check if the session is already taken
-        const isSessionTaken = allSessions.some(
-            (singleSession) => singleSession.date === date && singleSession.time === time
-        );
-
-        if (isSessionTaken) {
-            setDateTaken("This session is already taken. Please choose another date and time.");
-            return;
-        }
+        console.log(date);
 
         const editedSessionAndVolunteer = {
-            name,
-            phone,
-            email,
-            time,
-            date,
+            Name: name,
+            Phone: phone,
+            Email: email,
+            Time: time,
+            Date: date,
         };
 
         try {
@@ -91,8 +81,9 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, allSessions })
         }
 
         setEditWindowOpen(false);
-        console.log(name, phone, email, time, date);
+        console.log(editedSessionAndVolunteer);
     }
+
 
     return (
         <Dialog open={editWindowOpen} onClose={handleClose} sx={{ backgroundColor: "rgba(21, 20, 19, 0.4)" }}>
@@ -100,7 +91,7 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, allSessions })
             <Grid container direction="column" justifyContent="flex-start" sx={{ m: "2rem", mt: "0rem" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        onChange={(newDate) => setDate(newDate.format("DD/MM/YYYY"))}
+                        onChange={(newDate) => setDate(newDate.format("DD-MM-YYYY"))}
                         disablePast
                         sx={{ m: "0.5rem", width: "15rem" }}
                         required
@@ -144,15 +135,12 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, allSessions })
                         Cancel
                     </Button>
                 </Grid>
-
-                {dateTaken !== "" && (<p>{dateTaken}</p>)}
-                {dateTaken && <p style={{ color: "red", marginTop: "1rem" }}>{dateTaken}</p>}
             </Grid>
         </Dialog>
     );
 };
 
-const EditWindowDemo = ({ session, allSessions }) => {
+const EditWindowDemo = ({ session }) => {
     const [editWindowOpen, setEditWindowOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -171,7 +159,6 @@ const EditWindowDemo = ({ session, allSessions }) => {
                 Edit
             </Button>
             <EditWindow
-                allSessions={allSessions}
                 session={session}
                 editWindowOpen={editWindowOpen}
                 setEditWindowOpen={setEditWindowOpen}
