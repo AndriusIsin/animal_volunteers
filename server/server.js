@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
 const cors = require("cors");
+
 app.use(express.json());
 app.use(cors());
 const dotenv = require("dotenv");
@@ -63,6 +64,21 @@ app.put("/volunteers/:id", async (req, res) => {
     if (isNaN(volunteerId)) {
       return res.status(400).json({ error: "Invalid volunteer ID" });
     }
+
+    const checkSessionQuery = `
+      SELECT COUNT(*) FROM sessions
+      WHERE date = $1 AND time = $2 
+    `;
+    const checkSessionValues = [Date, Time];
+
+    const result = await pool.query(checkSessionQuery, checkSessionValues);
+
+    const sessionCount = result[0].count;
+
+    if (sessionCount > 0) {
+      return res.status(400).json({ error: "This session is already taken. Please choose another date and time." });
+    }
+
     const updateVolunteerQuery = `
       UPDATE volunteers
       SET Name = $1, Phone = $2, Email = $3

@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState } from "react";
 import InputForm from "./Components/InputForm";
 import MainBanner from "./Components/MainBanner";
-import { Grid } from "@mui/material";
+import { Grid, ThemeProvider, createTheme } from "@mui/material";
 import dayjs from "dayjs";
 import Navbar from "./Components/Navbar";
 import { Outlet } from "react-router-dom";
@@ -50,49 +50,66 @@ function App() {
       });
   }, [valueDate.date]);
 
+  const bootstrapTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#54626F",
+      },
+      secondary: {
+        main: "#ffffff",
+      },
+    },
+  });
+
   return (
-    <div className="App">
-      <Navbar />
-      <MainBanner />
-      <Grid
-        className="container"
-        container
-        mt="3rem"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{
-          width: {
-            xs: "98%",
-            md: "90%",
-          },
-        }}
-      >
-        <Grid item xs={5}>
-          <Calendar setValueDate={setValueDate} />
+
+    <ThemeProvider theme={bootstrapTheme}>
+      <div className="App">
+        <Navbar />
+        <MainBanner />
+        <Grid
+          className="container"
+          container
+          mt="3rem"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{
+            width: {
+              xs: "98%",
+              md: "90%",
+            },
+          }}
+        >
+
+          <Grid item xs={5}>
+            <Calendar setValueDate={setValueDate} />
+          </Grid>
+          <Grid item xs={7}>
+            {loading ? (
+              <img src={loadingGif} alt="Loading" />
+            ) : (
+              <InputForm
+                allSessions={allSessions}
+                setAllSessions={setAllSessions}
+                valueDate={valueDate}
+                sessionMorningBooked={sessionMorningBooked}
+                sessionNightBooked={sessionNightBooked}
+                setSessionMorningBooked={setSessionMorningBooked}
+                setSessionNightBooked={setSessionNightBooked}
+                openFormNight={openFormNight}
+                setOpenformNight={setOpenformNight}
+                openFormDay={openFormDay}
+                setOpenFormDay={setOpenFormDay}
+              />
+            )}
+          </Grid>
+          <Outlet />
+          <AdminVue allSessions={allSessions} setAllSessions={setAllSessions} valueDate={valueDate} />
         </Grid>
-        <Grid item xs={7}>
-          {loading ? (
-            <img src={loadingGif} alt="Loading" />
-          ) : (
-            <InputForm
-              allSessions={allSessions}
-              setAllSessions={setAllSessions}
-              valueDate={valueDate}
-              sessionMorningBooked={sessionMorningBooked}
-              sessionNightBooked={sessionNightBooked}
-              setSessionMorningBooked={setSessionMorningBooked}
-              setSessionNightBooked={setSessionNightBooked}
-              openFormNight={openFormNight}
-              setOpenformNight={setOpenformNight}
-              openFormDay={openFormDay}
-              setOpenFormDay={setOpenFormDay}
-            />
-          )}
-        </Grid>
-      </Grid>
-      <Outlet />
-      <AdminVue allSessions={allSessions} valueDate={valueDate} />
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
+
+
 export default App;

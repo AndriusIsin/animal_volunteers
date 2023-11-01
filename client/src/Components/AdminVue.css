@@ -5,8 +5,18 @@
     justify-content: center;
 }
 
-.admin-vue {
+
+.container-for-search {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+}
+
+.container-for-search h3 {
+    font-size: 24pt;
+    font-weight: 300;
+    color: #54626F;
+    ;
 }
