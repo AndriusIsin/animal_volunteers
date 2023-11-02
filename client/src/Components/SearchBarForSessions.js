@@ -23,9 +23,6 @@ const SearchBarForSessions = ({ allSessions }) => {
         };
     });
 
-
-
-
     const GroupHeader = styled("div")(({ theme }) => ({
         position: "sticky",
         top: "-8px",
