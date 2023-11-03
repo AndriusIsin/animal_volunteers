@@ -16,6 +16,7 @@ const InputForm = ({
   setOpenformNight,
   openFormDay,
   setOpenFormDay,
+
 }) => {
   const [sessionTime, setSessionTime] = useState("night");
   const [date, setDate] = useState("");

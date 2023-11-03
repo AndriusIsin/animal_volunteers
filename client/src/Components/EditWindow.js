@@ -28,7 +28,9 @@ const RadioButtonsGroup = ({ setTime, time }) => {
                     defaultValue="morning"
                     name="radio-buttons-group"
                     value={time}
-                    onChange={(e) => (e.target.value === "morning" ? setTime("morning") : setTime("evening"))}
+                    onChange={(e) => (
+                        e.target.value === "morning" ? setTime("morning") : setTime("evening")
+                    )}
                 >
                     <FormControlLabel value="morning" control={<Radio />} label="Morning" />
                     <FormControlLabel value="evening" control={<Radio />} label="Evening" />
@@ -38,12 +40,13 @@ const RadioButtonsGroup = ({ setTime, time }) => {
     );
 };
 
-const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
+const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessage }) => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [time, setTime] = useState("");
     const [date, setDate] = useState("");
+
     const id = session.volunteers_id;
 
     const handleClose = () => {
@@ -81,6 +84,8 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
         }
 
         setEditWindowOpen(false);
+        setUpdateMessage(true);
+
         console.log(editedSessionAndVolunteer);
     }
 
@@ -140,11 +145,12 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
     );
 };
 
-const EditWindowDemo = ({ session, setAllSessions, allSessions }) => {
+const EditWindowDemo = ({ session, setAllSessions, allSessions, setUpdateMessage }) => {
     const [editWindowOpen, setEditWindowOpen] = useState(false);
 
     const handleClickOpen = () => {
         setEditWindowOpen(true);
+        setUpdateMessage(false);
     };
 
     return (
@@ -164,6 +170,7 @@ const EditWindowDemo = ({ session, setAllSessions, allSessions }) => {
                 setEditWindowOpen={setEditWindowOpen}
                 setAllSessions={setAllSessions}
                 allSessions={allSessions}
+                setUpdateMessage={setUpdateMessage}
             />
         </div>
     );
