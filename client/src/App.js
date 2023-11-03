@@ -3,14 +3,14 @@ import * as React from "react";
 import { useState } from "react";
 import InputForm from "./Components/InputForm";
 import MainBanner from "./Components/MainBanner";
-import { Grid, ThemeProvider, createTheme } from "@mui/material";
+import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import Navbar from "./Components/Navbar";
 import { Outlet } from "react-router-dom";
 import AdminVue from "./Components/AdminVue";
 import Calendar from "./Components/Calendar";
 import { useEffect } from "react";
-import loadingGif from "./images/loading.gif";
+import Loading from "./Components/Loading";
 function App() {
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
@@ -24,6 +24,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
+  const [error, setError] = useState(null);
   useEffect(() => {
     fetch("https://animal-server.onrender.com/sessions")
       .then((response) => response.json())
@@ -32,6 +33,7 @@ function App() {
         setOpenFormDay(false);
         setAllSessions(data);
         setLoading(false);
+
         // After setting allSessions
 
         const isDayBookingExist = data.some((session) => {
@@ -47,6 +49,10 @@ function App() {
           );
         });
         setSessionNightBooked(isNightBookingExist);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
       });
   }, [valueDate.date]);
 
@@ -62,7 +68,6 @@ function App() {
   });
 
   return (
-
     <ThemeProvider theme={bootstrapTheme}>
       <div className="App">
         <Navbar />
@@ -80,14 +85,23 @@ function App() {
             },
           }}
         >
-
-          <Grid item xs={5}>
+          <Grid item xs={12} sm={12} md={5}>
             <Calendar setValueDate={setValueDate} />
           </Grid>
-          <Grid item xs={7}>
-            {loading ? (
-              <img src={loadingGif} alt="Loading" />
-            ) : (
+          <Grid item xs={12} sm={12} md={7}>
+            {error ? (
+              <Typography
+                variant="h6"
+                sx={{ fontSize: "3rem", color: "#54626F" }}
+              >
+                {
+                  // Improved error message for better client understanding
+                  error === "Failed to fetch"
+                    ? "Failed to retrieve data. Please check your internet connection and try again."
+                    : "An unexpected error occurred. Please try again later."
+                }
+              </Typography>
+            ) : !loading ? (
               <InputForm
                 allSessions={allSessions}
                 setAllSessions={setAllSessions}
@@ -101,15 +115,20 @@ function App() {
                 openFormDay={openFormDay}
                 setOpenFormDay={setOpenFormDay}
               />
+            ) : (
+              <Loading />
             )}
           </Grid>
           <Outlet />
-          <AdminVue allSessions={allSessions} setAllSessions={setAllSessions} valueDate={valueDate} />
+          <AdminVue
+            allSessions={allSessions}
+            setAllSessions={setAllSessions}
+            valueDate={valueDate}
+          />
         </Grid>
       </div>
     </ThemeProvider>
   );
 }
-
 
 export default App;
