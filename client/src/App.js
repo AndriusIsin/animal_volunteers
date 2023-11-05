@@ -11,6 +11,7 @@ import AdminVue from "./Components/AdminVue";
 import Calendar from "./Components/Calendar";
 import { useEffect } from "react";
 import Loading from "./Components/Loading";
+// import Volunteers from "./Components/Volunteers";
 function App() {
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
@@ -71,7 +72,9 @@ function App() {
     <ThemeProvider theme={bootstrapTheme}>
       <div className="App">
         <Navbar />
+
         <MainBanner />
+
         <Grid
           className="container"
           container
@@ -119,12 +122,22 @@ function App() {
               <Loading />
             )}
           </Grid>
-          <Outlet />
           <AdminVue
             allSessions={allSessions}
             setAllSessions={setAllSessions}
             valueDate={valueDate}
           />
+        </Grid>
+        <Grid container justifyContent="center">
+          <Grid
+            sx={{ margin: "2rem 2rem 2rem 2rem" }}
+            item
+            xs={12}
+            sm={12}
+            md={12}
+          >
+            <Outlet />
+          </Grid>
         </Grid>
       </div>
     </ThemeProvider>
