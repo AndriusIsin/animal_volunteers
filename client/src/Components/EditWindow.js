@@ -96,7 +96,7 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessa
             <Grid container direction="column" justifyContent="flex-start" sx={{ m: "2rem", mt: "0rem" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        onChange={(newDate) => setDate(newDate.format("DD/MM/YYYY"))}
+                        onChange={(newDate) => setDate(newDate)}
                         disablePast
                         sx={{ m: "0.5rem", width: "15rem" }}
                         required
@@ -145,7 +145,7 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessa
     );
 };
 
-const EditWindowDemo = ({ session, setAllSessions, allSessions, setUpdateMessage }) => {
+const EditWindowDemo = ({ session, filteredSessions, setUpdateMessage }) => {
     const [editWindowOpen, setEditWindowOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -168,8 +168,7 @@ const EditWindowDemo = ({ session, setAllSessions, allSessions, setUpdateMessage
                 session={session}
                 editWindowOpen={editWindowOpen}
                 setEditWindowOpen={setEditWindowOpen}
-                setAllSessions={setAllSessions}
-                allSessions={allSessions}
+                filteredSessions={filteredSessions}
                 setUpdateMessage={setUpdateMessage}
             />
         </div>

@@ -11,13 +11,17 @@ import AdminVue from "./Components/AdminVue";
 import Calendar from "./Components/Calendar";
 import { useEffect } from "react";
 import loadingGif from "./images/loading.gif";
+
+
 function App() {
+
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
     month: dayjs().format("MMMM"),
     dateDb: dayjs().format("DD/MM/YYYY"),
     date: dayjs().toISOString(),
   });
+
   const [sessionNightBooked, setSessionNightBooked] = useState(false);
   const [sessionMorningBooked, setSessionMorningBooked] = useState(false);
   const [allSessions, setAllSessions] = useState([]);
@@ -25,6 +29,8 @@ function App() {
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
   const [updateMessage, setUpdateMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   useEffect(() => {
     fetch("https://animal-server.onrender.com/sessions")
@@ -35,14 +41,12 @@ function App() {
         setAllSessions(data);
         setLoading(false);
         // After setting allSessions
-
         const isDayBookingExist = data.some((session) => {
           return (
             session.date === valueDate.dateDb && session.time === "morning"
           );
         });
         setSessionMorningBooked(isDayBookingExist);
-
         const isNightBookingExist = data.some((session) => {
           return (
             session.date === valueDate.dateDb && session.time === "evening"
@@ -50,7 +54,9 @@ function App() {
         });
         setSessionNightBooked(isNightBookingExist);
       });
-  }, [valueDate.date, updateMessage]);
+  }, [valueDate.date, updateMessage, successMessage]);
+
+  console.log("allSessions", allSessions);
 
   const bootstrapTheme = createTheme({
     palette: {
@@ -77,7 +83,7 @@ function App() {
           alignItems="center"
           sx={{
             width: {
-              xs: "98%",
+              xs: "90%",
               md: "90%",
             },
           }}
@@ -102,13 +108,16 @@ function App() {
                 setOpenformNight={setOpenformNight}
                 openFormDay={openFormDay}
                 setOpenFormDay={setOpenFormDay}
+                successMessage={successMessage}
+                setSuccessMessage={setSuccessMessage}
               />
             )}
           </Grid>
-          <Outlet />
-          <AdminVue allSessions={allSessions} setAllSessions={setAllSessions} valueDate={valueDate} updateMessage={updateMessage}
-            setUpdateMessage={setUpdateMessage} />
         </Grid>
+        <Outlet />
+        <AdminVue allSessions={allSessions} valueDate={valueDate} updateMessage={updateMessage}
+          setUpdateMessage={setUpdateMessage} />
+
       </div>
     </ThemeProvider>
   );

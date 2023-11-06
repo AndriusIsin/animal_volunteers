@@ -5,11 +5,11 @@ import EditWindowDemo from "./EditWindow";
 
 
 
-const SessionInfoCard = ({ allSessions, setAllSessions, setUpdateMessage }) => {
-
+const SessionInfoCard = ({ setUpdateMessage, filteredSessions }) => {
+  console.log("filteredSessons", filteredSessions);
   return (
     <div>
-      {allSessions.map((session, index) => (
+      {filteredSessions !== undefined ? filteredSessions.map((session, index) => (
         <Card variant="outlined" key={index} className="info-card">
           <Grid
             container
@@ -25,7 +25,7 @@ const SessionInfoCard = ({ allSessions, setAllSessions, setUpdateMessage }) => {
                 <p>{session.volunteer_name}</p>
               </Grid>
               <Grid container direction="row" justifyContent="flex-end">
-                <EditWindowDemo session={session} allSessions={allSessions} setAllSessions={setAllSessions} setUpdateMessage={setUpdateMessage} />
+                <EditWindowDemo session={session} filteredSessions={filteredSessions} setUpdateMessage={setUpdateMessage} />
                 <Button variant="outlined" sx={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} color="primary" startIcon={<DeleteIcon />}>
                   Delete
                 </Button>
@@ -39,7 +39,7 @@ const SessionInfoCard = ({ allSessions, setAllSessions, setUpdateMessage }) => {
           </Grid>
         </Card>
 
-      ))}
+      )) : (<p>No sessions</p>)}
     </div>
   );
 };

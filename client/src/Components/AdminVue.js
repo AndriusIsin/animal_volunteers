@@ -1,9 +1,11 @@
 import "./AdminVue.css";
 import SearchBarForSessions from "./SearchBarForSessions";
 import SessionInfoCard from "./SessionInfoCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const AdminVue = ({ allSessions, valueDate, setAllSessions, updateMessage, setUpdateMessage }) => {
+const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage }) => {
+
+  const [filteredSessions, setFilteredSessions] = useState(allSessions);
   const clearMessage = () => {
     setUpdateMessage("");
   };
@@ -14,19 +16,20 @@ const AdminVue = ({ allSessions, valueDate, setAllSessions, updateMessage, setUp
       const timer = setTimeout(clearMessage, 5000);
       return () => clearTimeout(timer);
     }
-  }, [updateMessage]);
+
+    setFilteredSessions(allSessions);
+  }, [updateMessage, allSessions]);
 
   return (
     <div className="admin-wrapper">
       <div className="admin-vue">
-        {updateMessage && <p>Thank you! Information updated.</p>}
+        {updateMessage && <p style={{ backgroundColor: "#9DC183", borderRadius: "6px", width: "20rem", display: "inline-block", padding: "1rem", color: "white" }}>Thank you! Information updated.</p>}
         <div className="container-for-search">
           <h3>Booked sessions</h3>
-          <SearchBarForSessions allSessions={allSessions} />
+          <SearchBarForSessions allSessions={allSessions} filteredSessions={filteredSessions} setFilteredSessions={setFilteredSessions} />
         </div>
-        {Array.isArray(allSessions) ? (
-          <SessionInfoCard allSessions={allSessions} setAllSessions={setAllSessions} valueDate={valueDate}
-            setUpdateMessage={setUpdateMessage} />
+        {Array.isArray(filteredSessions) ? (
+          <SessionInfoCard filteredSessions={filteredSessions} valueDate={valueDate} setUpdateMessage={setUpdateMessage} />
         ) : (
           <p>Invalid session data</p>
         )}
