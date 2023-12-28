@@ -105,12 +105,13 @@ function App() {
             <Calendar setValueDate={setValueDate} />
           </Grid>
           <Grid item xs={7}>
-            {(errorMessage !== "" && !loading) && <p>{errorMessage}</p>};
-            {loading ? (
+            {loading && errorMessage === "" ? (
               <div>
                 <img src={loadingGif} alt="Loading" style={{ width: "3rem" }} />
                 <p>Please wait until we load our service for you. It might take a couple of minutes.</p>
               </div>
+            ) : errorMessage !== "" ? (
+              <p>{errorMessage}</p>
             ) : (
               <InputForm
                 allSessions={allSessions}
