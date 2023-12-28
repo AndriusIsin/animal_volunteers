@@ -25,7 +25,7 @@ const MainBanner = () => {
                     justifySelf: "flex-start",
                 }}>
                     <Button
-                        sx={{ background: "rgba(245, 191, 66, 0.5)", color: "rgb(255, 250, 250)", borderRadius: 20, borderColor: "rgb(245, 191, 66)" }} variant="outlined">
+                        sx={{ background: "rgba(84, 98, 111, 0.5)", color: "rgb(255, 250, 250)", borderRadius: 20, borderColor: "white" }} variant="outlined">
                         Book Session
                     </Button>
                 </Box>

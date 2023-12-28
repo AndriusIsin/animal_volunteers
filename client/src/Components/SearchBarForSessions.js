@@ -16,13 +16,14 @@ const SearchBarForSessions = ({ allSessions, setFilteredSessions }) => {
         },
     });
 
-    const options = allSessions.map((option) => {
+    const options = Array.from(allSessions).map((option) => {
         const firstLetter = option.volunteer_name[0].toUpperCase();
         return {
             firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
             ...option,
         };
     });
+
 
     const GroupHeader = styled("div")(({ theme }) => ({
         position: "sticky",
@@ -44,9 +45,10 @@ const SearchBarForSessions = ({ allSessions, setFilteredSessions }) => {
         console.log("newValue", newValue);
 
         if (newValue !== "" && newValue !== null) {
-            // Ensure session is not null before accessing its properties
-            const searchSessions = allSessions.filter((session) => session.volunteer_name === newValue.volunteer_name);
-            setFilteredSessions(searchSessions);
+            if (allSessions !== null && allSessions !== []) {
+                const searchSessions = allSessions.filter((session) => session.volunteer_name === newValue.volunteer_name);
+                setFilteredSessions(searchSessions);
+            }
         } else {
             setFilteredSessions(allSessions);
         }

@@ -3,9 +3,10 @@ import SearchBarForSessions from "./SearchBarForSessions";
 import SessionInfoCard from "./SessionInfoCard";
 import { useEffect, useState } from "react";
 
-const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage }) => {
+const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage, deleteMessage, setDeleteMessage }) => {
 
   const [filteredSessions, setFilteredSessions] = useState(allSessions);
+  const [delInfo, setDelInfo] = useState("");
   const clearMessage = () => {
     setUpdateMessage("");
   };
@@ -16,26 +17,30 @@ const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage }) =
       const timer = setTimeout(clearMessage, 5000);
       return () => clearTimeout(timer);
     }
-
+    console.log("delInfo", delInfo.message);
+    console.log("deleteMessage", deleteMessage);
     setFilteredSessions(allSessions);
   }, [updateMessage, allSessions]);
 
   return (
     <div className="admin-wrapper">
       <div className="admin-vue">
-        {updateMessage && <p style={{ backgroundColor: "#9DC183", borderRadius: "6px", width: "20rem", display: "inline-block", padding: "1rem", color: "white" }}>Thank you! Information updated.</p>}
+        {updateMessage && (
+          <p style={{ backgroundColor: "#9DC183", borderRadius: "6px", width: "20rem", display: "inline-block", padding: "1rem", color: "white" }}>Thank you! Information updated.</p>
+        )}
+        {deleteMessage && (
+          <p style={{ display: "inline-block" }}>{delInfo}</p>
+        )
+        }
         <div className="container-for-search">
           <h3>Booked sessions</h3>
-          <SearchBarForSessions allSessions={allSessions} filteredSessions={filteredSessions} setFilteredSessions={setFilteredSessions} />
+          <SearchBarForSessions allSessions={allSessions} setFilteredSessions={setFilteredSessions} />
         </div>
-        {Array.isArray(filteredSessions) ? (
-          <SessionInfoCard filteredSessions={filteredSessions} valueDate={valueDate} setUpdateMessage={setUpdateMessage} />
-        ) : (
-          <p>Invalid session data</p>
-        )}
+        <SessionInfoCard setDeleteMessage={setDeleteMessage} filteredSessions={filteredSessions} valueDate={valueDate} setUpdateMessage={setUpdateMessage} setDelInfo={setDelInfo} />
       </div>
     </div>
   );
+
 };
 
 export default AdminVue;

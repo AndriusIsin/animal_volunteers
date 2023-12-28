@@ -29,32 +29,44 @@ function App() {
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
   const [updateMessage, setUpdateMessage] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [deleteMessage, setDeleteMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
 
   useEffect(() => {
     fetch("https://animal-server.onrender.com/sessions")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          setErrorMessage("Sorry, we are experiencing some problems with our server. Please try again later.");
+          throw new Error(`HTTP error! Status: ${response.status}`);
+
+        }
+        return response.json();
+      })
       .then((data) => {
         setOpenformNight(false);
         setOpenFormDay(false);
         setAllSessions(data);
         setLoading(false);
+
         // After setting allSessions
         const isDayBookingExist = data.some((session) => {
-          return (
-            session.date === valueDate.dateDb && session.time === "morning"
-          );
+          return session.date === valueDate.dateDb && session.time === "morning";
         });
         setSessionMorningBooked(isDayBookingExist);
+
         const isNightBookingExist = data.some((session) => {
-          return (
-            session.date === valueDate.dateDb && session.time === "evening"
-          );
+          return session.date === valueDate.dateDb && session.time === "evening";
         });
         setSessionNightBooked(isNightBookingExist);
+
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-  }, [valueDate.date, updateMessage, successMessage]);
+
+  }, [valueDate.date, updateMessage, deleteMessage]);
+
 
   console.log("allSessions", allSessions);
 
@@ -93,8 +105,12 @@ function App() {
             <Calendar setValueDate={setValueDate} />
           </Grid>
           <Grid item xs={7}>
+            {(errorMessage !== "" && !loading) && <p>{errorMessage}</p>};
             {loading ? (
-              <img src={loadingGif} alt="Loading" />
+              <div>
+                <img src={loadingGif} alt="Loading" style={{ width: "3rem" }} />
+                <p>Please wait until we load our service for you. It might take a couple of minutes.</p>
+              </div>
             ) : (
               <InputForm
                 allSessions={allSessions}
@@ -108,8 +124,8 @@ function App() {
                 setOpenformNight={setOpenformNight}
                 openFormDay={openFormDay}
                 setOpenFormDay={setOpenFormDay}
-                successMessage={successMessage}
-                setSuccessMessage={setSuccessMessage}
+                deleteMessage={deleteMessage}
+                setDeleteMessage={setDeleteMessage}
               />
             )}
           </Grid>

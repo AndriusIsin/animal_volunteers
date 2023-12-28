@@ -41,10 +41,11 @@ const RadioButtonsGroup = ({ setTime, time }) => {
 };
 
 const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessage }) => {
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [time, setTime] = useState("");
+    console.log("session", session);
+    const [name, setName] = useState(session.name);
+    const [phone, setPhone] = useState(session.phone);
+    const [email, setEmail] = useState(session.email);
+    const [time, setTime] = useState(session.time);
     const [date, setDate] = useState("");
 
     const id = session.volunteers_id;

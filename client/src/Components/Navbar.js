@@ -12,8 +12,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AgricultureIcon from "@mui/icons-material/Agriculture";
+// import EmojiNatureIcon from "@mui/icons-material/EmojiNature";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Link } from "react-router-dom";
+
 
 const pages = ["Home", "About", "Calendar", "Contacts"];
 const pagesAdmin = ["Sessions ", "Volunteers"];
@@ -54,9 +56,9 @@ function ResponsiveAppBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "rgba(135, 155, 159, 0.2)" }}
+      sx={{ backgroundColor: "#54626F" }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="100%">
         <Toolbar disableGutters>
           <AgricultureIcon
             sx={{
@@ -80,11 +82,11 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#54626F",
+              color: "rgb(255, 219, 153)",
               textDecoration: "none",
             }}
           >
-            FarmLogo
+            MiniFarm
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -94,7 +96,7 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              style={{ color: "#54626F" }}
+              style={{ color: "rgb(255, 241, 215)" }}
             >
               <MenuIcon />
             </IconButton>
@@ -119,7 +121,7 @@ function ResponsiveAppBar() {
               {menuPages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
-                    style={{ textDecoration: "none", color: "#54626F" }}
+                    style={{ textDecoration: "none", color: "rgb(255, 241, 215)" }}
                     to={page === "Home" ? "/" : `/${page}`}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -151,7 +153,7 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#54626F",
+              color: "rgb(255, 219, 153)",
               textDecoration: "none",
             }}
           >
@@ -165,12 +167,12 @@ function ResponsiveAppBar() {
                 sx={{
                   my: 2,
                   mx: isAdmin ? 10 : 4,
-                  color: "#54626F",
+                  color: "rgb(255, 241, 215)",
                   display: "block",
                 }}
               >
                 <Link
-                  style={{ textDecoration: "none", color: "#54626F" }}
+                  style={{ textDecoration: "none", color: "rgb(255, 241, 215)" }}
                   to={page === "Home" ? "/" : `/${page}`}
                 >
                   {page}
@@ -184,11 +186,11 @@ function ResponsiveAppBar() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {!isAdmin ? (
                   <AccountCircleIcon
-                    sx={{ fontSize: "3rem", color: "#54626F" }}
+                    sx={{ fontSize: "3rem", color: "rgb(255, 241, 215)" }}
                   />
                 ) : (
                   <AdminPanelSettingsIcon
-                    sx={{ fontSize: "3rem", color: "#54626F" }}
+                    sx={{ fontSize: "3rem", color: "rgb(255, 241, 215)" }}
                   />
                 )}
               </IconButton>
@@ -223,7 +225,7 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
-    </AppBar>
+    </AppBar >
   );
 }
 
