@@ -65,7 +65,7 @@ function App() {
         console.error("Error fetching data:", error);
       });
 
-  }, [valueDate.date, updateMessage, deleteMessage]);
+  }, [valueDate.date, updateMessage]);
 
 
   console.log("allSessions", allSessions);
@@ -132,8 +132,16 @@ function App() {
           </Grid>
         </Grid>
         <Outlet />
-        <AdminVue allSessions={allSessions} valueDate={valueDate} updateMessage={updateMessage}
-          setUpdateMessage={setUpdateMessage} />
+        {errorMessage === "" && (
+          <AdminVue
+            deleteMessage={deleteMessage}
+            setDeleteMessage={setDeleteMessage}
+            allSessions={allSessions}
+            valueDate={valueDate}
+            updateMessage={updateMessage}
+            setUpdateMessage={setUpdateMessage}
+          />
+        )}
 
       </div>
     </ThemeProvider>

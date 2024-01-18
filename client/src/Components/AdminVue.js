@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage, deleteMessage, setDeleteMessage }) => {
 
   const [filteredSessions, setFilteredSessions] = useState(allSessions);
-  const [delInfo, setDelInfo] = useState("");
   const clearMessage = () => {
     setUpdateMessage("");
   };
@@ -17,8 +16,6 @@ const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage, del
       const timer = setTimeout(clearMessage, 5000);
       return () => clearTimeout(timer);
     }
-    console.log("delInfo", delInfo.message);
-    console.log("deleteMessage", deleteMessage);
     setFilteredSessions(allSessions);
   }, [updateMessage, allSessions]);
 
@@ -26,17 +23,17 @@ const AdminVue = ({ allSessions, valueDate, updateMessage, setUpdateMessage, del
     <div className="admin-wrapper">
       <div className="admin-vue">
         {updateMessage && (
-          <p style={{ backgroundColor: "#9DC183", borderRadius: "6px", width: "20rem", display: "inline-block", padding: "1rem", color: "white" }}>Thank you! Information updated.</p>
+          <p style={{ backgroundColor: "#9DC183", borderRadius: "6px", width: "20rem", display: "inline-block", position: "absolute", zIndex: 1, padding: "1rem", color: "white" }}>Thank you! Information updated.</p>
         )}
         {deleteMessage && (
-          <p style={{ display: "inline-block" }}>{delInfo}</p>
+          <p style={{ backgroundColor: "#9DC183", position: "absolute", zIndex: 1, borderRadius: "6px", width: "20rem", display: "inline-block", padding: "1rem", color: "white" }}>Information about this session was deleted.</p>
         )
         }
         <div className="container-for-search">
           <h3>Booked sessions</h3>
           <SearchBarForSessions allSessions={allSessions} setFilteredSessions={setFilteredSessions} />
         </div>
-        <SessionInfoCard setDeleteMessage={setDeleteMessage} filteredSessions={filteredSessions} valueDate={valueDate} setUpdateMessage={setUpdateMessage} setDelInfo={setDelInfo} />
+        <SessionInfoCard filteredSessions={filteredSessions} valueDate={valueDate} setUpdateMessage={setUpdateMessage} setDeleteMessage={setDeleteMessage} />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import EditWindowDemo from "./EditWindow";
 
 
 
-const SessionInfoCard = ({ setUpdateMessage, filteredSessions, setDeleteMessage, setDelInfo }) => {
+const SessionInfoCard = ({ setUpdateMessage, filteredSessions, setDeleteMessage }) => {
   console.log("filteredSessons", filteredSessions);
   const handleDeleteClick = (volID) => {
     fetch(`https://animal-server.onrender.com/volunteers/${volID}`, {
@@ -20,9 +20,7 @@ const SessionInfoCard = ({ setUpdateMessage, filteredSessions, setDeleteMessage,
       })
       .then((data) => {
         console.log("When Message del", data);
-        setDelInfo(data);
         setDeleteMessage(true);
-
       })
       .catch((error) => {
         console.error("Error deleting video:", error);
