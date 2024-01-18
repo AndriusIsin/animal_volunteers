@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 const Form = ({
   sessionTime,
   date,
-  setSuccessMessage,
   handleCloseBookingForm,
   SetSessionBooked,
 }) => {
@@ -51,7 +50,6 @@ const Form = ({
         }
       } else if (res.ok) {
         setErrorMessage("");
-        setSuccessMessage("User and session created");
         SetSessionBooked(true);
       }
 
@@ -74,7 +72,7 @@ const Form = ({
     }
   }
   return (
-    <form className="form-inputs" onSubmit={handleSubmitButton}>
+    <form className="form-inputs" onSubmit={handleSubmitButton} autoComplete="off">
       {errorMessage !== "" && <p>{errorMessage}</p>}
       <input
         type="text"
@@ -82,7 +80,6 @@ const Form = ({
         onChange={(e) => {
           setName(e.target.value);
           validateForm();
-          setSuccessMessage("");
         }}
         placeholder="Enter Your FullName"
         className="input-Name"

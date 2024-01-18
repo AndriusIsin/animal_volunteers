@@ -3,32 +3,46 @@ import * as React from "react";
 import { useState } from "react";
 import InputForm from "./Components/InputForm";
 import MainBanner from "./Components/MainBanner";
-import { Grid, ThemeProvider, createTheme, Typography } from "@mui/material";
+import { Grid, ThemeProvider, createTheme } from "@mui/material";
 import dayjs from "dayjs";
 import Navbar from "./Components/Navbar";
 import { Outlet } from "react-router-dom";
 import AdminVue from "./Components/AdminVue";
 import Calendar from "./Components/Calendar";
 import { useEffect } from "react";
-import Loading from "./Components/Loading";
-// import Volunteers from "./Components/Volunteers";
+import loadingGif from "./images/loading.gif";
+
+
 function App() {
+
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
     month: dayjs().format("MMMM"),
     dateDb: dayjs().format("DD/MM/YYYY"),
     date: dayjs().toISOString(),
   });
+
   const [sessionNightBooked, setSessionNightBooked] = useState(false);
   const [sessionMorningBooked, setSessionMorningBooked] = useState(false);
   const [allSessions, setAllSessions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openFormNight, setOpenformNight] = useState(false);
   const [openFormDay, setOpenFormDay] = useState(false);
-  const [error, setError] = useState(null);
+  const [updateMessage, setUpdateMessage] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+
   useEffect(() => {
     fetch("https://animal-server.onrender.com/sessions")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          setErrorMessage("Sorry, we are experiencing some problems with our server. Please try again later.");
+          throw new Error(`HTTP error! Status: ${response.status}`);
+
+        }
+        return response.json();
+      })
       .then((data) => {
         setOpenformNight(false);
         setOpenFormDay(false);
@@ -36,26 +50,25 @@ function App() {
         setLoading(false);
 
         // After setting allSessions
-
         const isDayBookingExist = data.some((session) => {
-          return (
-            session.date === valueDate.dateDb && session.time === "morning"
-          );
+          return session.date === valueDate.dateDb && session.time === "morning";
         });
         setSessionMorningBooked(isDayBookingExist);
 
         const isNightBookingExist = data.some((session) => {
-          return (
-            session.date === valueDate.dateDb && session.time === "evening"
-          );
+          return session.date === valueDate.dateDb && session.time === "evening";
         });
         setSessionNightBooked(isNightBookingExist);
+
       })
       .catch((error) => {
-        setError(error.message);
-        setLoading(false);
+        console.error("Error fetching data:", error);
       });
-  }, [valueDate.date]);
+
+  }, [valueDate.date, updateMessage]);
+
+
+  console.log("allSessions", allSessions);
 
   const bootstrapTheme = createTheme({
     palette: {
@@ -69,12 +82,11 @@ function App() {
   });
 
   return (
+
     <ThemeProvider theme={bootstrapTheme}>
       <div className="App">
         <Navbar />
-
         <MainBanner />
-
         <Grid
           className="container"
           container
@@ -83,28 +95,24 @@ function App() {
           alignItems="center"
           sx={{
             width: {
-              xs: "98%",
+              xs: "90%",
               md: "90%",
             },
           }}
         >
-          <Grid item xs={12} sm={12} md={5}>
+
+          <Grid item xs={5}>
             <Calendar setValueDate={setValueDate} />
           </Grid>
-          <Grid item xs={12} sm={12} md={7}>
-            {error ? (
-              <Typography
-                variant="h6"
-                sx={{ fontSize: "3rem", color: "#54626F" }}
-              >
-                {
-                  // Improved error message for better client understanding
-                  error === "Failed to fetch"
-                    ? "Failed to retrieve data. Please check your internet connection and try again."
-                    : "An unexpected error occurred. Please try again later."
-                }
-              </Typography>
-            ) : !loading ? (
+          <Grid item xs={7}>
+            {loading && errorMessage === "" ? (
+              <div>
+                <img src={loadingGif} alt="Loading" style={{ width: "3rem" }} />
+                <p>Please wait until we load our service for you. It might take a couple of minutes.</p>
+              </div>
+            ) : errorMessage !== "" ? (
+              <p>{errorMessage}</p>
+            ) : (
               <InputForm
                 allSessions={allSessions}
                 setAllSessions={setAllSessions}
@@ -117,31 +125,28 @@ function App() {
                 setOpenformNight={setOpenformNight}
                 openFormDay={openFormDay}
                 setOpenFormDay={setOpenFormDay}
+                deleteMessage={deleteMessage}
+                setDeleteMessage={setDeleteMessage}
               />
-            ) : (
-              <Loading />
             )}
           </Grid>
+        </Grid>
+        <Outlet />
+        {errorMessage === "" && (
           <AdminVue
+            deleteMessage={deleteMessage}
+            setDeleteMessage={setDeleteMessage}
             allSessions={allSessions}
-            setAllSessions={setAllSessions}
             valueDate={valueDate}
+            updateMessage={updateMessage}
+            setUpdateMessage={setUpdateMessage}
           />
-        </Grid>
-        <Grid container justifyContent="center">
-          <Grid
-            sx={{ margin: "2rem 2rem 2rem 2rem" }}
-            item
-            xs={12}
-            sm={12}
-            md={12}
-          >
-            <Outlet />
-          </Grid>
-        </Grid>
+        )}
+
       </div>
     </ThemeProvider>
   );
 }
+
 
 export default App;

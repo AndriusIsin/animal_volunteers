@@ -3,9 +3,10 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { styled, lighten, darken } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
 
-const SearchBarForSessions = ({ allSessions }) => {
-    const [selectedValue, setSelectedValue] = React.useState("");
+const SearchBarForSessions = ({ allSessions, setFilteredSessions }) => {
+    const [selectedValue, setSelectedValue] = useState("");
     const theme = createTheme({
         palette: {
             primary: {
@@ -15,13 +16,14 @@ const SearchBarForSessions = ({ allSessions }) => {
         },
     });
 
-    const options = allSessions.map((option) => {
+    const options = Array.from(allSessions).map((option) => {
         const firstLetter = option.volunteer_name[0].toUpperCase();
         return {
             firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
             ...option,
         };
     });
+
 
     const GroupHeader = styled("div")(({ theme }) => ({
         position: "sticky",
@@ -39,10 +41,22 @@ const SearchBarForSessions = ({ allSessions }) => {
     });
 
     const handleAutocompleteChange = (event, newValue) => {
-        newValue ? setSelectedValue(newValue) : setSelectedValue("");
+        setSelectedValue(newValue);
+        console.log("newValue", newValue);
+
+        if (newValue !== "" && newValue !== null) {
+            if (allSessions !== null && allSessions !== []) {
+                const searchSessions = allSessions.filter((session) => session.volunteer_name === newValue.volunteer_name);
+                setFilteredSessions(searchSessions);
+            }
+        } else {
+            setFilteredSessions(allSessions);
+        }
     };
 
-    console.log("selectedValue", selectedValue.volunteer_name);
+
+
+
 
     return (
         <ThemeProvider theme={theme}>

@@ -5,11 +5,32 @@ import EditWindowDemo from "./EditWindow";
 
 
 
-const SessionInfoCard = ({ allSessions, setAllSessions }) => {
+const SessionInfoCard = ({ setUpdateMessage, filteredSessions, setDeleteMessage }) => {
+  console.log("filteredSessons", filteredSessions);
+  const handleDeleteClick = (volID) => {
+    fetch(`https://animal-server.onrender.com/volunteers/${volID}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          console.error(`Failed to delete session (Status: ${res.status})`);
+          throw new Error(`Failed to delete session (Status: ${res.status})`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("When Message del", data);
+        setDeleteMessage(true);
+      })
+      .catch((error) => {
+        console.error("Error deleting video:", error);
+      });
+
+  };
 
   return (
     <div>
-      {allSessions.map((session, index) => (
+      {filteredSessions && filteredSessions.length > 0 ? filteredSessions.map((session, index) => (
         <Card variant="outlined" key={index} className="info-card">
           <Grid
             container
@@ -25,8 +46,9 @@ const SessionInfoCard = ({ allSessions, setAllSessions }) => {
                 <p>{session.volunteer_name}</p>
               </Grid>
               <Grid container direction="row" justifyContent="flex-end">
-                <EditWindowDemo session={session} allSessions={allSessions} setAllSessions={setAllSessions} />
-                <Button variant="outlined" sx={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} color="primary" startIcon={<DeleteIcon />}>
+                <EditWindowDemo session={session} filteredSessions={filteredSessions} setUpdateMessage={setUpdateMessage} />
+                <Button variant="outlined" sx={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }} color="primary" startIcon={<DeleteIcon />}
+                  onClick={() => handleDeleteClick(session.volunteers_id)}>
                   Delete
                 </Button>
               </Grid>
@@ -39,7 +61,7 @@ const SessionInfoCard = ({ allSessions, setAllSessions }) => {
           </Grid>
         </Card>
 
-      ))}
+      )) : (<p>No sessions</p>)}
     </div>
   );
 };

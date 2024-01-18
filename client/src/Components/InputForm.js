@@ -17,9 +17,9 @@ const InputForm = ({
   openFormDay,
   setOpenFormDay,
 }) => {
+  const [successMessage, setSuccessMessage] = ("");
   const [sessionTime, setSessionTime] = useState("night");
   const [date, setDate] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const handleBookClickNight = () => {
     setOpenformNight(true);
     setSessionTime("evening");
@@ -41,6 +41,11 @@ const InputForm = ({
   const handleCloseBookingFormNight = () => {
     setOpenformNight(false);
   };
+
+  const handleCloseBookingForm = () => {
+    setSuccessMessage("Session booked successfully");
+  };
+
 
   return (
     <div>
@@ -79,7 +84,7 @@ const InputForm = ({
               )}
             </div>
             <Collapse in={openFormDay}>
-              {successMessage !== "" ? (
+              {successMessage && successMessage !== "" ? (
                 <p>{successMessage}</p>
               ) : (
                 <p>To book your Day Session plese Fill in the form:</p>
@@ -121,13 +126,13 @@ const InputForm = ({
               )}
             </div>
             <Collapse in={openFormNight}>
-              {successMessage !== "" ? (
+              {successMessage && successMessage !== "" ? (
                 <p>{successMessage}</p>
               ) : (
                 <p>To book your Night Session plese Fill in the form:</p>
               )}
               <Form
-                handleCloseBookingForm={handleCloseBookingFormNight}
+                handleCloseBookingForm={handleCloseBookingForm}
                 sessionTime={sessionTime}
                 setSuccessMessage={setSuccessMessage}
                 date={date}

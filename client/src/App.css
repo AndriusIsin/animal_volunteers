@@ -42,13 +42,3 @@
   width: 80%;
 }
 
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}
-
-.blink_me {
-  animation: blinker 1s linear infinite;
-  text-align: center;
-}

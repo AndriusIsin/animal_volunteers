@@ -28,7 +28,9 @@ const RadioButtonsGroup = ({ setTime, time }) => {
                     defaultValue="morning"
                     name="radio-buttons-group"
                     value={time}
-                    onChange={(e) => (e.target.value === "morning" ? setTime("morning") : setTime("evening"))}
+                    onChange={(e) => (
+                        e.target.value === "morning" ? setTime("morning") : setTime("evening")
+                    )}
                 >
                     <FormControlLabel value="morning" control={<Radio />} label="Morning" />
                     <FormControlLabel value="evening" control={<Radio />} label="Evening" />
@@ -38,12 +40,14 @@ const RadioButtonsGroup = ({ setTime, time }) => {
     );
 };
 
-const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [time, setTime] = useState("");
+const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessage }) => {
+    console.log("session", session);
+    const [name, setName] = useState(session.name);
+    const [phone, setPhone] = useState(session.phone);
+    const [email, setEmail] = useState(session.email);
+    const [time, setTime] = useState(session.time);
     const [date, setDate] = useState("");
+
     const id = session.volunteers_id;
 
     const handleClose = () => {
@@ -81,6 +85,8 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
         }
 
         setEditWindowOpen(false);
+        setUpdateMessage(true);
+
         console.log(editedSessionAndVolunteer);
     }
 
@@ -91,7 +97,7 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
             <Grid container direction="column" justifyContent="flex-start" sx={{ m: "2rem", mt: "0rem" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        onChange={(newDate) => setDate(newDate.format("DD/MM/YYYY"))}
+                        onChange={(newDate) => setDate(newDate)}
                         disablePast
                         sx={{ m: "0.5rem", width: "15rem" }}
                         required
@@ -140,11 +146,12 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session }) => {
     );
 };
 
-const EditWindowDemo = ({ session, setAllSessions, allSessions }) => {
+const EditWindowDemo = ({ session, filteredSessions, setUpdateMessage }) => {
     const [editWindowOpen, setEditWindowOpen] = useState(false);
 
     const handleClickOpen = () => {
         setEditWindowOpen(true);
+        setUpdateMessage(false);
     };
 
     return (
@@ -162,8 +169,8 @@ const EditWindowDemo = ({ session, setAllSessions, allSessions }) => {
                 session={session}
                 editWindowOpen={editWindowOpen}
                 setEditWindowOpen={setEditWindowOpen}
-                setAllSessions={setAllSessions}
-                allSessions={allSessions}
+                filteredSessions={filteredSessions}
+                setUpdateMessage={setUpdateMessage}
             />
         </div>
     );
