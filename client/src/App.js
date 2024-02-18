@@ -100,15 +100,19 @@ function App() {
           alignItems="center"
           sx={{
             width: {
-              xs: "90%",
-              md: "90%",
+              xs: "100%", // Set width to 100% on extra small screens
+              md: "90%", // Set width to 90% on medium screens and above
             },
           }}
         >
-          <Grid item xs={5}>
+          <Grid item xs={12} md={5}>
+            {" "}
+            {/* Full width on extra small screens, half width on medium screens and above */}
             <Calendar setValueDate={setValueDate} />
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={12} md={7}>
+            {" "}
+            {/* Full width on extra small screens, half width on medium screens and above */}
             {loading && errorMessage === "" ? (
               <div>
                 <img src={loadingGif} alt="Loading" style={{ width: "3rem" }} />
