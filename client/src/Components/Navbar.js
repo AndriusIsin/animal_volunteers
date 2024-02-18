@@ -16,8 +16,7 @@ import AgricultureIcon from "@mui/icons-material/Agriculture";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Link } from "react-router-dom";
 
-
-const pages = ["Home", "About", "Calendar", "Contacts"];
+const pages = [];
 const pagesAdmin = ["Sessions ", "Volunteers"];
 const settings = ["Admin", "User"];
 
@@ -54,10 +53,7 @@ function ResponsiveAppBar() {
   const menuPages = isAdmin ? pagesAdmin : pages;
 
   return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: "#54626F" }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: "#54626F" }}>
       <Container maxWidth="100%">
         <Toolbar disableGutters>
           <AgricultureIcon
@@ -121,7 +117,10 @@ function ResponsiveAppBar() {
               {menuPages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Link
-                    style={{ textDecoration: "none", color: "rgb(255, 241, 215)" }}
+                    style={{
+                      textDecoration: "none",
+                      color: "rgb(255, 241, 215)",
+                    }}
                     to={page === "Home" ? "/" : `/${page}`}
                   >
                     <Typography textAlign="center">{page}</Typography>
@@ -172,7 +171,10 @@ function ResponsiveAppBar() {
                 }}
               >
                 <Link
-                  style={{ textDecoration: "none", color: "rgb(255, 241, 215)" }}
+                  style={{
+                    textDecoration: "none",
+                    color: "rgb(255, 241, 215)",
+                  }}
                   to={page === "Home" ? "/" : `/${page}`}
                 >
                   {page}
@@ -225,7 +227,7 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
-    </AppBar >
+    </AppBar>
   );
 }
 

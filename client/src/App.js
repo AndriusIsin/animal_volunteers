@@ -12,9 +12,7 @@ import Calendar from "./Components/Calendar";
 import { useEffect } from "react";
 import loadingGif from "./images/loading.gif";
 
-
 function App() {
-
   const [valueDate, setValueDate] = useState({
     day: dayjs().format("DD"),
     month: dayjs().format("MMMM"),
@@ -31,15 +29,16 @@ function App() {
   const [updateMessage, setUpdateMessage] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [updatePage, setUpdatePage] = useState(false);
 
   useEffect(() => {
     fetch("https://animal-server.onrender.com/sessions")
       .then((response) => {
         if (!response.ok) {
-          setErrorMessage("Sorry, we are experiencing some problems with our server. Please try again later.");
+          setErrorMessage(
+            "Sorry, we are experiencing some problems with our server. Please try again later."
+          );
           throw new Error(`HTTP error! Status: ${response.status}`);
-
         }
         return response.json();
       })
@@ -51,22 +50,29 @@ function App() {
 
         // After setting allSessions
         const isDayBookingExist = data.some((session) => {
-          return session.date === valueDate.dateDb && session.time === "morning";
+          return (
+            session.date === valueDate.dateDb && session.time === "morning"
+          );
         });
         setSessionMorningBooked(isDayBookingExist);
 
         const isNightBookingExist = data.some((session) => {
-          return session.date === valueDate.dateDb && session.time === "evening";
+          return (
+            session.date === valueDate.dateDb && session.time === "evening"
+          );
         });
         setSessionNightBooked(isNightBookingExist);
-
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-
-  }, [valueDate.date, updateMessage]);
-
+  }, [
+    valueDate.date,
+    updateMessage,
+    sessionNightBooked,
+    sessionMorningBooked,
+    updatePage,
+  ]);
 
   console.log("allSessions", allSessions);
 
@@ -82,7 +88,6 @@ function App() {
   });
 
   return (
-
     <ThemeProvider theme={bootstrapTheme}>
       <div className="App">
         <Navbar />
@@ -100,7 +105,6 @@ function App() {
             },
           }}
         >
-
           <Grid item xs={5}>
             <Calendar setValueDate={setValueDate} />
           </Grid>
@@ -108,7 +112,10 @@ function App() {
             {loading && errorMessage === "" ? (
               <div>
                 <img src={loadingGif} alt="Loading" style={{ width: "3rem" }} />
-                <p>Please wait until we load our service for you. It might take a couple of minutes.</p>
+                <p>
+                  Please wait until we load our service for you. It might take a
+                  couple of minutes.
+                </p>
               </div>
             ) : errorMessage !== "" ? (
               <p>{errorMessage}</p>
@@ -127,6 +134,7 @@ function App() {
                 setOpenFormDay={setOpenFormDay}
                 deleteMessage={deleteMessage}
                 setDeleteMessage={setDeleteMessage}
+                setUpdatePage={setUpdatePage}
               />
             )}
           </Grid>
@@ -140,13 +148,12 @@ function App() {
             valueDate={valueDate}
             updateMessage={updateMessage}
             setUpdateMessage={setUpdateMessage}
+            setUpdatePage={setUpdatePage}
           />
         )}
-
       </div>
     </ThemeProvider>
   );
 }
-
 
 export default App;

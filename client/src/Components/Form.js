@@ -72,7 +72,11 @@ const Form = ({
     }
   }
   return (
-    <form className="form-inputs" onSubmit={handleSubmitButton} autoComplete="off">
+    <form
+      className="form-inputs"
+      onSubmit={handleSubmitButton}
+      autoComplete="off"
+    >
       {errorMessage !== "" && <p>{errorMessage}</p>}
       <input
         type="text"

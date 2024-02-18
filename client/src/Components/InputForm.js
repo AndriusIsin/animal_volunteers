@@ -5,7 +5,6 @@ import "./InputForm.css";
 import { useState } from "react";
 import Form from "./Form";
 
-
 const InputForm = ({
   valueDate,
   sessionMorningBooked,
@@ -17,7 +16,7 @@ const InputForm = ({
   openFormDay,
   setOpenFormDay,
 }) => {
-  const [successMessage, setSuccessMessage] = ("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [sessionTime, setSessionTime] = useState("night");
   const [date, setDate] = useState("");
   const handleBookClickNight = () => {
@@ -46,10 +45,9 @@ const InputForm = ({
     setSuccessMessage("Session booked successfully");
   };
 
-
   return (
     <div>
-      <div className="container-background">
+      <div id="book" className="container-background">
         <Grid className="registration-form" container flexDirection="row">
           <Grid item xs={2} className="date-placeholder">
             <h2>{valueDate.day}</h2>
@@ -92,7 +90,6 @@ const InputForm = ({
               <Form
                 handleCloseBookingForm={handleCloseFormDay}
                 sessionTime={sessionTime}
-                setSuccessMessage={setSuccessMessage}
                 date={date}
                 SetSessionBooked={setSessionMorningBooked}
               />
@@ -134,7 +131,6 @@ const InputForm = ({
               <Form
                 handleCloseBookingForm={handleCloseBookingForm}
                 sessionTime={sessionTime}
-                setSuccessMessage={setSuccessMessage}
                 date={date}
                 SetSessionBooked={setSessionNightBooked}
               />
