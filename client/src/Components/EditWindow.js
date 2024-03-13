@@ -28,9 +28,10 @@ const RadioButtonsGroup = ({ setTime, time }) => {
                     defaultValue="morning"
                     name="radio-buttons-group"
                     value={time}
-                    onChange={(e) => (
-                        e.target.value === "morning" ? setTime("morning") : setTime("evening")
-                    )}
+                    onChange={(e) => {
+                        e.target.value === "morning" && setTime("morning");
+                        e.target.value === "evening" && setTime("evening");
+                    }}
                 >
                     <FormControlLabel value="morning" control={<Radio />} label="Morning" />
                     <FormControlLabel value="evening" control={<Radio />} label="Evening" />
@@ -54,10 +55,7 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessa
         setEditWindowOpen(false);
     };
 
-    async function handleSaveButton(e) {
-        e.preventDefault();
-        console.log(id);
-        console.log(date);
+    async function handleSaveButton() {
 
         const editedSessionAndVolunteer = {
             Name: name,
