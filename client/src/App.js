@@ -35,9 +35,6 @@ function App() {
     fetch("https://animal-server.onrender.com/sessions")
       .then((response) => {
         if (!response.ok) {
-          setErrorMessage(
-            "Sorry, we are experiencing some problems with our server. Please try again later."
-          );
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
@@ -65,6 +62,10 @@ function App() {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        setLoading(false);
+        setErrorMessage(
+          "Sorry, we are experiencing some problems with our server. Please try again later."
+        );
       });
   }, [
     valueDate.date,
@@ -73,6 +74,7 @@ function App() {
     sessionMorningBooked,
     updatePage,
   ]);
+
 
   console.log("allSessions", allSessions);
 
