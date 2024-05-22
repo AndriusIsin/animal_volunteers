@@ -2,6 +2,9 @@ import "./AdminVue.css";
 import SearchBarForSessions from "./SearchBarForSessions";
 import SessionInfoCard from "./SessionInfoCard";
 import { useEffect, useState } from "react";
+import imageProcessing from "../images/2.gif";
+import Grid from "@mui/material/Grid";
+
 
 const AdminVue = ({
   setUpdatePage,
@@ -31,36 +34,43 @@ const AdminVue = ({
     <div className="admin-wrapper">
       <div className="admin-vue">
         {updateMessage && (
-          <p
-            style={{
-              backgroundColor: "#9DC183",
-              borderRadius: "6px",
-              width: "20rem",
-              display: "inline-block",
-              position: "absolute",
-              zIndex: 1,
-              padding: "1rem",
-              color: "white",
-            }}
-          >
-            Thank you! Information updated.
-          </p>
+          <Grid container direction="column" alignItems="center" sx={{ zIndex: 10, position: "absolute", borderRadius: "1rem", backgroundColor: "rgb(255, 255, 255, 0.8)", width: "45rem", border: "solid black 3px" }}>
+            <Grid item>
+              <img src={imageProcessing} alt="Image processing" style={{ width: "20rem" }} />
+            </Grid>
+            <Grid item sx={{ position: "absolute", pt: "9rem", textAlign: "center" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  fontWeight: 600,
+                  fontSize: "1.6rem",
+                  color: "#FF5F0F",
+                }}
+              >
+                Thank you! Information updating...
+              </div>
+            </Grid>
+          </Grid>
+
         )}
         {deleteMessage && (
-          <p
-            style={{
-              backgroundColor: "#9DC183",
-              position: "absolute",
-              zIndex: 1,
-              borderRadius: "6px",
-              width: "20rem",
-              display: "inline-block",
-              padding: "1rem",
-              color: "white",
-            }}
-          >
-            Information about this session was deleted.
-          </p>
+          <Grid container direction="column" alignItems="center" sx={{ zIndex: 10, position: "absolute", borderRadius: "1rem", backgroundColor: "rgb(255, 255, 255, 0.8)", width: "45rem", border: "solid black 3px" }}>
+            <Grid item>
+              <img src={imageProcessing} alt="Image processing" style={{ width: "20rem" }} />
+            </Grid>
+            <Grid item sx={{ position: "absolute", pt: "9rem", textAlign: "center" }}>
+              <div
+                style={{
+                  textAlign: "center",
+                  fontWeight: 600,
+                  fontSize: "1.6rem",
+                  color: "#FF5F0F",
+                }}
+              >
+                Information about this session deleting...
+              </div>
+            </Grid>
+          </Grid>
         )}
         <div className="container-for-search">
           <h3>Booked sessions</h3>
@@ -77,7 +87,7 @@ const AdminVue = ({
           setUpdatePage={setUpdatePage}
         />
       </div>
-    </div>
+    </div >
   );
 };
 

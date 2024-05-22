@@ -48,12 +48,10 @@ app.get("/sessions", async (req, res) => {
     const { rows } = await pool.query(query);
     res.status(200).json(rows);
   } catch (error) {
-    console.error("Error executing the query:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching sessions" });
+    console.error("Error connecting to the database:", error);
+    res.status(500).json({ error: "Unable to connect to the database" })
   }
-});
+})
 
 // Update volunteer information and session date and time
 app.put("/volunteers/:id", async (req, res) => {
