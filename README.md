@@ -7,7 +7,7 @@ Create an app where volunteers can select a session in a calendar and book an av
 ## Project Links
 
 - **Backend Server:** [Animal Server](https://animal-server.onrender.com/sessions)
-- **Frontend Application:** [Animal Farm](https://animal-farm-bgj2.onrender.com)
+- **Frontend Application:** [Animal Farm](https://animal-farm-volunteers.onrender.com/)
 
 ## User Stories
 
