@@ -32,7 +32,7 @@ function App() {
   const [updatePage, setUpdatePage] = useState(false);
 
   useEffect(() => {
-    fetch("https://animal-server.onrender.com/sessions")
+    fetch("https://animal-volunteers.onrender.com/sessions")
       .then((response) => {
         if (!response.ok) {
           setErrorMessage(

@@ -32,7 +32,7 @@ const Form = ({
 
     try {
       const res = await fetch(
-        "https://animal-server.onrender.com/volunteers-and-sessions",
+        "https://animal-volunteers.onrender.com/volunteers-and-sessions",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ const Form = ({
       }
 
       const response = await fetch(
-        "https://animal-server.onrender.com/sessions"
+        "https://animal-volunteers.onrender.com/sessions"
       );
 
       if (!response.ok) {
