@@ -11,7 +11,7 @@ const SessionInfoCard = ({
 }) => {
   console.log("filteredSessons", filteredSessions);
   const handleDeleteClick = (volID) => {
-    fetch(`https://animal-server.onrender.com/volunteers/${volID}`, {
+    fetch(`https://animal-farm-volunteers.onrender.com/volunteers/${volID}`, {
       method: "DELETE",
     })
       .then((res) => {
