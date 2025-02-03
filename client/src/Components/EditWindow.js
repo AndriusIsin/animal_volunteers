@@ -68,7 +68,7 @@ const EditWindow = ({ editWindowOpen, setEditWindowOpen, session, setUpdateMessa
         };
 
         try {
-            const response = await fetch(`https://animal-farm-volunteers.onrender.com/volunteers/${id}`, {
+            const response = await fetch(`https://animal-volunteers.onrender.com/volunteers/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(editedSessionAndVolunteer),
